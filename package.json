@@ -12,8 +12,10 @@
     "url": "git+https://github.com/CMSC-23-2nd-Sem-2024-2025/week-08-data-persistence-yuuneeell.git"
   },
   "contributors": [
-    "Eunel Jacob Joyosa (@yuuneeell) ecjoyosa@up.edu.ph",
-    "Your Name (@github_username) <UP email>"
+    "Trisha Elain Bañes (@tmbanes)",
+    "Hervé Roldan (@hfroldan)",
+    "Eunel Jacob Joyosa (@yuuneeell)",
+    "Joshua Pagcaliwagan (@JoshuaPagcaliwagan-ui)"
   ],
   "license": "ISC",
   "bugs": {
