@@ -18,9 +18,6 @@
     "Joshua Pagcaliwagan (@JoshuaPagcaliwagan-ui)"
   ],
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/CMSC-100-2S24-25/final-project-requirements-cmsc-100-2s24-25-c-1l-group-5"
-  },
   "homepage": "https://github.com/CMSC-100-2S24-25/final-project-requirements-cmsc-100-2s24-25-c-1l-group-5#readme",
   "dependencies": {
     "express": "^5.1.0"
