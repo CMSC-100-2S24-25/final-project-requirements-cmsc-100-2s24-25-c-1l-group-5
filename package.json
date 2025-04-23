@@ -1,0 +1,26 @@
+{
+  "name": "final_project_grp5",
+  "version": "1.0.0",
+  "description": "Group 5 C-1L Final Project Requirements CMSC 100 2S24-25",
+  "type": "module",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CMSC-23-2nd-Sem-2024-2025/week-08-data-persistence-yuuneeell.git"
+  },
+  "contributors": [
+    "Eunel Jacob Joyosa (@yuuneeell) ecjoyosa@up.edu.ph",
+    "Your Name (@github_username) <UP email>"
+  ],
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CMSC-23-2nd-Sem-2024-2025/week-08-data-persistence-yuuneeell/issues"
+  },
+  "homepage": "https://github.com/CMSC-23-2nd-Sem-2024-2025/week-08-data-persistence-yuuneeell#readme",
+  "dependencies": {
+    "express": "^5.1.0"
+  }
+}
