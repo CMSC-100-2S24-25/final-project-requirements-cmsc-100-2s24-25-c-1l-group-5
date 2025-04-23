@@ -21,6 +21,6 @@ This web application is developed by Group 5 C-1L (2nd Sem AY24-25):
 - **Bañes**, Trisha Elaine (@[tmbanes](https://github.com/tmbanes))
 - **Roldan**, Hervé (@[hfroldan](https://github.com/hfroldan))
 - **Joyosa**, Eunel Jacob (@[yuuneeell](https://github.com/yuuneeell))
-- Pagcaliwagan, Joshua (@[JoshuaPagcaliwagan-ui](https://github.com/JoshuaPagcaliwagan-ui))
+- **Pagcaliwagan**, Joshua (@[JoshuaPagcaliwagan-ui](https://github.com/JoshuaPagcaliwagan-ui))
 
 
