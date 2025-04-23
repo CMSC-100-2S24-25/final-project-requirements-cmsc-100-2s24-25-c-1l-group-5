@@ -9,7 +9,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CMSC-23-2nd-Sem-2024-2025/week-08-data-persistence-yuuneeell.git"
+    "url": "git+https://github.com/CMSC-100-2S24-25/final-project-requirements-cmsc-100-2s24-25-c-1l-group-5"
   },
   "contributors": [
     "Trisha Elain Bañes (@tmbanes)",
@@ -19,9 +19,9 @@
   ],
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CMSC-23-2nd-Sem-2024-2025/week-08-data-persistence-yuuneeell/issues"
+    "url": "https://github.com/CMSC-100-2S24-25/final-project-requirements-cmsc-100-2s24-25-c-1l-group-5"
   },
-  "homepage": "https://github.com/CMSC-23-2nd-Sem-2024-2025/week-08-data-persistence-yuuneeell#readme",
+  "homepage": "https://github.com/CMSC-100-2S24-25/final-project-requirements-cmsc-100-2s24-25-c-1l-group-5#readme",
   "dependencies": {
     "express": "^5.1.0"
   }
