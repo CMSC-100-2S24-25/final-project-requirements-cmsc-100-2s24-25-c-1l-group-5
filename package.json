@@ -20,6 +20,7 @@
   "license": "ISC",
   "homepage": "https://github.com/CMSC-100-2S24-25/final-project-requirements-cmsc-100-2s24-25-c-1l-group-5#readme",
   "dependencies": {
-    "express": "^5.1.0"
+    "express": "^5.1.0",
+    "mongoose": "^8.13.3"
   }
 }
