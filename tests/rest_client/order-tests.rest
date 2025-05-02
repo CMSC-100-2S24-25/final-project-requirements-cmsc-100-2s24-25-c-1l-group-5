@@ -1,0 +1,17 @@
+### Create an order
+POST http://localhost:3000/api/orders
+Content-Type: application/json
+
+{
+  "prodId": "{{productId}}",  # Replace after getting a product ID
+  "qty": 2,
+  "email": "customer@example.com"
+}
+
+### Update order status
+PATCH http://localhost:3000/api/orders/{{orderId}}
+Content-Type: application/json
+
+{
+  "status": 1
+}

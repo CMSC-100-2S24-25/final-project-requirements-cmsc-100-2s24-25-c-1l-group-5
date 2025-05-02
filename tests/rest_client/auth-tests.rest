@@ -1,0 +1,19 @@
+### Register a new customer
+POST http://localhost:3000/api/auth/register
+Content-Type: application/json
+
+{
+  "fName": "Eunel",
+  "lName": "Joyosa",
+  "email": "ejcjoyosa@up.edu.ph",
+  "password": "admintest1234"
+}
+
+### Login with registered credentials
+POST http://localhost:3000/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "ejcjoyosa@up.edu.ph",
+  "password": "admintest1234"
+}
