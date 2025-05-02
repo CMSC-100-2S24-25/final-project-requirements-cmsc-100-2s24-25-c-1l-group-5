@@ -7,4 +7,4 @@ const prodSchema = new mongoose.Schema({
   price: { type: Number, required: true },//price
   qty: { type: Number, required: true }//qty
 });
-export default mongoose.model('Product', prodSchema);//export
+export default mongoose.model('Product', prodSchema, "products");//export
