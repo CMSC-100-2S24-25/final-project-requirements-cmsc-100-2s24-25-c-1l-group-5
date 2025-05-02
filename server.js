@@ -1,19 +1,25 @@
+// server.js
+// Import packages
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 
-// setup the server and added parser to read incoming requests
+// Import routes
+import authRoutes from './server/routes/authRoutes.js';
+import productRoutes from './server/routes/productRoutes.js';
+import orderRoutes from './server/routes/orderRoutes.js';
+
 const app = express();
 dotenv.config();
 
-// Below acts as a plugin in order to read JSON contents of incoming request messages (Middleware)
+// Middleware
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: false }));
 
-// Connect to Database
+// Database Connection
 const connectDB = async () => {
   try {
-    await mongoose.connect(`${process.env.MONGODB_URI}${process.env.DB_NAME}`, {
+    await mongoose.connect(`${process.env.MONGODB_URI}`, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
@@ -22,17 +28,22 @@ const connectDB = async () => {
     console.error('MongoDB connection error:', error);
     process.exit(1);
   }
-}
+};
 
 connectDB();
 
-// Routes 
-// app.use('/api/products', productRoutes); (placeholder for later)
+// Routes
+app.use('/api/auth', authRoutes);
+app.use('/api/products', productRoutes);
+app.use('/api/orders', orderRoutes);
 
-// Basic GET endpoint
+// Basic endpoint
 app.get('/', (req, res) => {
   res.send('Farm-to-Table Server Running');
 });
 
 const PORT = 3000;
-app.listen(PORT, () => {console.log(`Server running on port ${PORT}`)});
+app.listen(PORT, () => {
+  console.log(`Server running on port http://localhost:${PORT}/`);
+});
+

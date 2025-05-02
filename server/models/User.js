@@ -1,3 +1,4 @@
+// server/models/User.js
 import mongoose from 'mongoose';//import
 const userSchema = new mongoose.Schema({
   fName: { type: String, required: true },//first name

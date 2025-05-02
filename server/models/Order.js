@@ -1,3 +1,4 @@
+// server/models/Order.js
 import mongoose from 'mongoose';//import
 const ordSchema = new mongoose.Schema({
   orderId: { type: String, required: true },//order id

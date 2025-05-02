@@ -1,3 +1,4 @@
+// server/models/Product.js
 import mongoose from 'mongoose';//import
 const prodSchema = new mongoose.Schema({
   name: { type: String, required: true },//name
