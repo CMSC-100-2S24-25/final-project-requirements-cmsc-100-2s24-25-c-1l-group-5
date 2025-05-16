@@ -1,6 +1,9 @@
 import { SidebarProvider } from "../../components/ui/sidebar"
 import { AppSidebar } from "../../components/user/UserSideBar"
 import { Button } from "../../components/ui/button"
+import { useCart } from "../../components/user/Cart"; 
+import toast from 'react-hot-toast';
+
 
 import {
     DropdownMenu,
@@ -56,6 +59,8 @@ const products = [
 ]
 
 export default function Home() {
+    const { addToCart } = useCart();
+    
     return (
         <SidebarProvider>
             <div className="flex min-h-screen w-full">
@@ -90,7 +95,10 @@ export default function Home() {
 
                                 <CardFooter className="flex justify-between items-center">
                                     Stock: {product.stock ?? "N/A"}
-                                    <Button>Add to Cart</Button>
+                                    <Button onClick={() => {
+                                        addToCart(product);
+                                        toast(`${product.name} added to cart!`,{position: 'bottom-right'});
+                                    }}>Add to Cart</Button>
                                 </CardFooter>
                             </Card>
                         ))}
