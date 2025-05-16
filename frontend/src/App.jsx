@@ -1,10 +1,15 @@
-import { Button } from "@/components/ui/button"
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Home from './pages/user/HomePage.jsx'
+import ShoppingCart from "./pages/user/ShoppingCart.jsx";
 
 function App() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-svh">
-      <Button>Click me</Button>
-    </div>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/cart" element={<ShoppingCart />} />
+      </Routes>
+    </Router>
   )
 }
 

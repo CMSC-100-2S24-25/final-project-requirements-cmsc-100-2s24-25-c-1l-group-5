@@ -1,4 +1,5 @@
-import { List, ShoppingBasket, Package} from "lucide-react"
+import { List, ShoppingBasket, Package } from "lucide-react"
+import { Link } from "react-router-dom" // Use Link for navigation
 
 import {
   Sidebar,
@@ -11,18 +12,15 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-
-
-// Menu items.
 const items = [
   {
     title: "Product Listing",
-    url: "#",
+    url: "/",
     icon: List,
   },
   {
     title: "Shopping Cart",
-    url: "#",
+    url: "/cart",
     icon: ShoppingBasket,
   },
   {
@@ -43,10 +41,10 @@ export function AppSidebar() {
               {items.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
+                    <Link to={item.url} className="flex items-center gap-2">
+                      <item.icon size={20} />
                       <span>{item.title}</span>
-                    </a>
+                    </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
               ))}
@@ -55,5 +53,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  )
+  );
 }
