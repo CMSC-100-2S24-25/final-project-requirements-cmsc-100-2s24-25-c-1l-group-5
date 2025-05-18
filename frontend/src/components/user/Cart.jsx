@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import toast from 'react-hot-toast';
 
 const CartContext = createContext(); // use context to pass data around without passing props
 
@@ -20,6 +21,7 @@ export const Cart = ({ children }) => {
         return [...prevItems, { ...product, quantity: 1, itemPrice: product.price }];
       }
     });
+    toast(`${product.name} added to cart!`,{position: 'top-right'});
   };
 
   const removeFromCart = (productId) => {

@@ -28,33 +28,33 @@ const products = [
         name: "Product 1",
         desc: "Description",
         type: "Crop",
-        price: "20",
+        price: 20,
         stock: 100,
-        image: "https://via.placeholder.com/150",
+        image: "",
     },
     {
         id: 2,
         name: "Product 2",
         desc: "Description",
-        price: "35",
+        price: 35,
         stock: 31,
-        image: "https://via.placeholder.com/150",
+        image: "",
     },
     {
         id: 3,
         name: "Product 3",
         desc: "Description",
-        price: "53",
+        price: 53,
         stock: 41,
-        image: "https://via.placeholder.com/150",
+        image: "",
     },
     {
         id: 4,
         name: "Product 4",
         desc: "Description",
-        price: "20",
+        price: 20,
         stock: 31,
-        image: "https://via.placeholder.com/150",
+        image: "",
     },
 ]
 
@@ -95,9 +95,8 @@ export default function Home() {
 
                                 <CardFooter className="flex justify-between items-center">
                                     Stock: {product.stock ?? "N/A"}
-                                    <Button onClick={() => {
+                                    <Button className="w-full sm:w-auto" onClick={() => {
                                         addToCart(product);
-                                        toast(`${product.name} added to cart!`,{position: 'bottom-right'});
                                     }}>Add to Cart</Button>
                                 </CardFooter>
                             </Card>
