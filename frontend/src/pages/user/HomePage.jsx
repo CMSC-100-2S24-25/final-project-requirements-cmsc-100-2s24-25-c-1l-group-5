@@ -63,7 +63,7 @@ const products = [
 export default function Home() {
     const { addToCart } = useCart();
     const [sortOption, setSortOption] = useState("");
-    const sortedProducts =[...products];
+    const sortedProducts =[...products]; // copy products to new array, where sorting will happen
 
     if (sortOption === "name-asc") {
         sortedProducts.sort();
@@ -77,7 +77,7 @@ export default function Home() {
         sortedProducts.sort((a, b) => a.stock - b.stock);
     } else if (sortOption === "qty-desc") {
         sortedProducts.sort((a, b) => b.stock - a.stock);
-    }
+    } // sorting the products
 
     return (
         <SidebarProvider>
