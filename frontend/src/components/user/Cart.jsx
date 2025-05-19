@@ -57,7 +57,7 @@ export const Cart = ({ children }) => {
   }
 
   const clearCart = () => {
-    setCartItems([]); // set crt to empty
+    setCartItems([]); // set cart to empty
   };
 
   const totalPrice = cartItems.reduce(
