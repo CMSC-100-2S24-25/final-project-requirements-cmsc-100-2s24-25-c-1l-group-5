@@ -2,7 +2,7 @@ import { SidebarProvider } from "../../components/ui/sidebar"
 import { AppSidebar } from "../../components/user/UserSideBar"
 import { Button } from "../../components/ui/button"
 import { useCart } from "../../components/user/Cart";
-import toast from 'react-hot-toast';
+import { useState } from "react";
 
 import {
   Select,
@@ -62,6 +62,22 @@ const products = [
 
 export default function Home() {
     const { addToCart } = useCart();
+    const [sortOption, setSortOption] = useState("");
+    const sortedProducts =[...products];
+
+    if (sortOption === "name-asc") {
+        sortedProducts.sort();
+    } else if (sortOption === "name-desc") {
+        sortedProducts.reverse();
+    } else if (sortOption === "price-asc") {
+        sortedProducts.sort((a, b) => a.price - b.price);
+    } else if (sortOption === "price-desc") {
+        sortedProducts.sort((a, b) => b.price - a.price);
+    } else if (sortOption === "qty-asc") {
+        sortedProducts.sort((a, b) => a.stock - b.stock);
+    } else if (sortOption === "qty-desc") {
+        sortedProducts.sort((a, b) => b.stock - a.stock);
+    }
 
     return (
         <SidebarProvider>
@@ -77,11 +93,23 @@ export default function Home() {
                     <div className="border-b border-gray-300 my-6"></div>
 
                     <div>
-
+                        <Select onValueChange={setSortOption}>
+                            <SelectTrigger className="w-[200px]">
+                                <SelectValue placeholder="Sort By" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="name-asc">Name (Ascending)</SelectItem>
+                                <SelectItem value="name-desc">Name (Descending)</SelectItem>
+                                <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                                <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                                <SelectItem value="qty-asc">Quantity: Low to High</SelectItem>
+                                <SelectItem value="qtydesc">Quantity: High to Low</SelectItem>
+                            </SelectContent>
+                        </Select>
                     </div>
 
                     <div className="grid grid-cols-4 gap-6 mt-6">
-                        {products.map((product) => (
+                        {sortedProducts.map((product) => (
                             <Card key={product.id}>
                                 <CardHeader>
                                     <img
