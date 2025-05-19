@@ -24,7 +24,7 @@ export default function OrdersPage() {
         </div>
 
         <main className="flex-1 p-10 bg-gray-50">
-          <h2 className="text-3xl font-semibold">Order</h2>
+          <h2 className="text-3xl font-semibold">Orders</h2>
           <p className="mt-4 text-gray-500">View your orders</p>
 
           <div className="border-b border-gray-300 my-6"></div>

@@ -17,7 +17,7 @@ export const OrdersList = ({ children }) => {
         }
       ]);
       products.forEach(item =>
-        toast(`Placed order for ${item.name}`, { position: 'top-right' })
+        toast(`Placed order for ${item.name}.`, { position: 'top-right' })
       );
     };
 

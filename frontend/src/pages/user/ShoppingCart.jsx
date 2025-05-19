@@ -108,7 +108,7 @@ export default function ShoppingCart() {
           <div className="mx-auto w-full max-w-sm">
             <DrawerHeader>
               <DrawerTitle>Checkout</DrawerTitle>
-              <DrawerDescription>Order Summary</DrawerDescription>
+              <DrawerDescription>Order summary</DrawerDescription>
             </DrawerHeader>
 
             <ScrollArea className="h-[200px] w-[350px] p-1">
