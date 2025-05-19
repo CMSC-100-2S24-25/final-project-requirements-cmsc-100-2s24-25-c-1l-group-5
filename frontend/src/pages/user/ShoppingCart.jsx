@@ -1,10 +1,13 @@
 import { SidebarProvider } from "../../components/ui/sidebar";
 import { AppSidebar } from "../../components/user/UserSideBar";
 import { Button } from "../../components/ui/button";
-import { useCart } from "../../components/user/Cart";
 import { ScrollArea } from "@/components/ui/scroll-area"
 
 import { Plus, Minus, Truck } from "lucide-react"
+
+import { useCart } from "../../components/user/Cart";
+import { useOrders } from "../../components/user/OrdersList";
+
 
 import {
   Card,
@@ -28,12 +31,13 @@ import {
 
 export default function ShoppingCart() {
   const { cartItems, removeFromCart, clearCart, increaseQuantity, decreaseQuantity, totalPrice } = useCart();
-  console.log("Cart Items:", cartItems);
+  const{ placeOrder } = useOrders();
+
   return (
     <SidebarProvider>
       <Drawer>
         <div className="flex min-h-screen w-full">
-          <div className="w-64">
+          <div className="w-48">
             <AppSidebar />
           </div>
 
@@ -134,7 +138,13 @@ export default function ShoppingCart() {
                 Mode of Payment: Cash on Delivery
                 <Truck/>
               </div>
-              <Button>Place Order</Button>
+              <Button onClick={() => {
+                  placeOrder(cartItems, totalPrice);
+                  clearCart();
+                }}>
+                Place Order
+              </Button>
+
               <DrawerClose asChild>
                 <Button variant="outline">Cancel</Button>
               </DrawerClose>

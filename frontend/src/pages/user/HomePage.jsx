@@ -1,16 +1,18 @@
 import { SidebarProvider } from "../../components/ui/sidebar"
 import { AppSidebar } from "../../components/user/UserSideBar"
 import { Button } from "../../components/ui/button"
-import { useCart } from "../../components/user/Cart"; 
+import { useCart } from "../../components/user/Cart";
 import toast from 'react-hot-toast';
 
-
 import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem,
-} from "@/components/ui/dropdown-menu"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+
 
 import {
     Card,
@@ -60,11 +62,11 @@ const products = [
 
 export default function Home() {
     const { addToCart } = useCart();
-    
+
     return (
         <SidebarProvider>
             <div className="flex min-h-screen w-full">
-                <div className="w-64">
+                <div className="w-48">
                     <AppSidebar />
                 </div>
 
@@ -73,6 +75,10 @@ export default function Home() {
                     <p className="mt-4 text-gray-500">Insert tagline</p>
 
                     <div className="border-b border-gray-300 my-6"></div>
+
+                    <div>
+
+                    </div>
 
                     <div className="grid grid-cols-4 gap-6 mt-6">
                         {products.map((product) => (
