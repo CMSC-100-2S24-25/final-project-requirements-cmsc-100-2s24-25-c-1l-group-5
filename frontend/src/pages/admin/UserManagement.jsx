@@ -23,63 +23,59 @@ import {
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import UserFormDialog from "./UserFormDialog";
 
 // Sample user data
 const initialUsers = [
   {
     id: "1",
-    fname: "John",
-    mname: "David",
-    lname: "Doe",
+    fName: "John",
+    mName: "David",
+    lName: "Doe",
     email: "john.doe@example.com",
     password: "password123",
-    utype: "customer",
+    uType: "customer",
   },
   {
     id: "2",
-    fname: "Jane",
-    mname: "Marie",
-    lname: "Smith",
+    fName: "Jane",
+    mName: "Marie",
+    lName: "Smith",
     email: "jane.smith@example.com",
     password: "securePass456",
-    utype: "merchant",
+    uType: "merchant",
   },
   {
     id: "3",
-    fname: "Michael",
-    mname: "",
-    lname: "Johnson",
+    fName: "Michael",
+    mName: "",
+    lName: "Johnson",
     email: "michael.johnson@example.com",
     password: "pass7890",
-    utype: "customer",
+    uType: "customer",
   },
   {
     id: "4",
-    fname: "Emily",
-    mname: "Grace",
-    lname: "Brown",
+    fName: "Emily",
+    mName: "Grace",
+    lName: "Brown",
     email: "emily.brown@example.com",
     password: "emilyPass2025",
-    utype: "merchant",
+    uType: "merchant",
   },
   {
     id: "5",
-    fname: "Samuel",
-    mname: "Troy",
-    lname: "Taylor",
+    fName: "Samuel",
+    mName: "Troy",
+    lName: "Taylor",
     email: "samuel.taylor@example.com",
     password: "sam12345",
-    utype: "customer",
+    uType: "customer",
   },
 ];
 
-export default function UserTable() {
+export default function UserManagementPage() {
   const [data, setData] = useState(initialUsers);
   const [sorting, setSorting] = useState({
     column: null,
@@ -107,9 +103,9 @@ export default function UserTable() {
       const lowercasedQuery = searchQuery.toLowerCase();
       result = data.filter(
         (user) =>
-          user.fname.toLowerCase().includes(lowercasedQuery) ||
-          user.mname.toLowerCase().includes(lowercasedQuery) ||
-          user.lname.toLowerCase().includes(lowercasedQuery) ||
+          user.fName.toLowerCase().includes(lowercasedQuery) ||
+          user.mName.toLowerCase().includes(lowercasedQuery) ||
+          user.lName.toLowerCase().includes(lowercasedQuery) ||
           user.email.toLowerCase().includes(lowercasedQuery)
       );
     }
@@ -221,7 +217,7 @@ export default function UserTable() {
                   <TableHead>
                     <Button
                       variant="ghost"
-                      onClick={() => handleSort("fname")}
+                      onClick={() => handleSort("fName")}
                       className="flex items-center gap-1 font-medium"
                     >
                       First Name
@@ -232,7 +228,7 @@ export default function UserTable() {
                   <TableHead>
                     <Button
                       variant="ghost"
-                      onClick={() => handleSort("lname")}
+                      onClick={() => handleSort("lName")}
                       className="flex items-center gap-1 font-medium"
                     >
                       Last Name
@@ -259,15 +255,15 @@ export default function UserTable() {
                   paginatedData.map((user) => (
                     <TableRow key={user.id}>
                       <TableCell className="font-medium">
-                        {user.fname}
+                        {user.fName}
                       </TableCell>
-                      <TableCell>{user.mname}</TableCell>
-                      <TableCell>{user.lname}</TableCell>
+                      <TableCell>{user.mName}</TableCell>
+                      <TableCell>{user.lName}</TableCell>
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.password}</TableCell>
                       <TableCell>
-                        {user.utype.charAt(0).toUpperCase()}
-                        {user.utype.slice(1)}
+                        {user.uType.charAt(0).toUpperCase()}
+                        {user.uType.slice(1)}
                       </TableCell>
                       <TableCell>
                         <DropdownMenu>

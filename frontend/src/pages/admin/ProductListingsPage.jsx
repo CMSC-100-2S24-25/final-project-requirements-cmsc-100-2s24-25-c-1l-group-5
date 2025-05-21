@@ -1,4 +1,4 @@
-import React,{useState, useEffect} from "react";
+import { useState, useEffect } from "react";
 import {
   Table,
   TableBody,
@@ -33,6 +33,7 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ProductFormDialog from "./ProductFormDialog";
+import toast from "react-hot-toast";
 
 // Sample product data
 const initialProducts = [
@@ -151,7 +152,7 @@ const initialProducts = [
   },
 ];
 
-export default function ProductTable() {
+export default function ProductListingsPage() {
   const [data, setData] = useState(initialProducts);
   const [sorting, setSorting] = useState({
     column: null,
@@ -172,40 +173,40 @@ export default function ProductTable() {
 
   // Filter and sort data based on search query
   useEffect(() => {
-  let result = [];
-  if (searchQuery.trim() === "") {
-    result = data;
-  } else {
-    const lowercasedQuery = searchQuery.toLowerCase();
-    result = data.filter(
-      (product) =>
-        product.name.toLowerCase().includes(lowercasedQuery) ||
-        product.type.toLowerCase().includes(lowercasedQuery) ||
-        product.description.toLowerCase().includes(lowercasedQuery)
-    );
-  }
-  
-  // Then sort the filtered data if sorting is active
-  if (sorting.column) {
-    result = [...result].sort((a, b) => {
-      const aValue = a[sorting.column];
-      const bValue = b[sorting.column];
-      if (typeof aValue === "string" && typeof bValue === "string") {
-        return sorting.direction === "asc"
-          ? aValue.localeCompare(bValue)
-          : bValue.localeCompare(aValue);
-      } else {
-        return sorting.direction === "asc"
-          ? aValue - bValue
-          : bValue - aValue;
-      }
-    });
-  }
-  
-  // Update state with the filtered and sorted data
-  setFilteredData(result);
-  setCurrentPage(1);
-}, [searchQuery, data, sorting, sorting.column, sorting.direction]); 
+    let result = [];
+    if (searchQuery.trim() === "") {
+      result = data;
+    } else {
+      const lowercasedQuery = searchQuery.toLowerCase();
+      result = data.filter(
+        (product) =>
+          product.name.toLowerCase().includes(lowercasedQuery) ||
+          product.type.toLowerCase().includes(lowercasedQuery) ||
+          product.description.toLowerCase().includes(lowercasedQuery)
+      );
+    }
+
+    // Then sort the filtered data if sorting is active
+    if (sorting.column) {
+      result = [...result].sort((a, b) => {
+        const aValue = a[sorting.column];
+        const bValue = b[sorting.column];
+        if (typeof aValue === "string" && typeof bValue === "string") {
+          return sorting.direction === "asc"
+            ? aValue.localeCompare(bValue)
+            : bValue.localeCompare(aValue);
+        } else {
+          return sorting.direction === "asc"
+            ? aValue - bValue
+            : bValue - aValue;
+        }
+      });
+    }
+
+    // Update state with the filtered and sorted data
+    setFilteredData(result);
+    setCurrentPage(1);
+  }, [searchQuery, data, sorting, sorting.column, sorting.direction]);
 
   // Handle sorting
   const handleSort = (column) => {

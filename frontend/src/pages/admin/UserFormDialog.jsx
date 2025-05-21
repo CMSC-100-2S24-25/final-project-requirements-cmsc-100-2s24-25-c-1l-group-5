@@ -26,12 +26,12 @@ export default function UserFormDialog({
 }) {
   // Form state
   const [formData, setFormData] = useState({
-    fname: "",
-    mname: "",
-    lname: "",
+    fName: "",
+    mName: "",
+    lName: "",
     email: "",
     password: "",
-    utype: "",
+    uType: "",
   });
 
   // Form validation errors
@@ -42,21 +42,21 @@ export default function UserFormDialog({
     if (initialData) {
       setFormData({
         id: initialData.id,
-        fname: initialData.fname,
-        mname: initialData.mname,
-        lname: initialData.lname,
+        fName: initialData.fName,
+        mName: initialData.mName,
+        lName: initialData.lName,
         email: initialData.email,
         password: initialData.password,
-        utype: initialData.utype,
+        uType: initialData.uType,
       });
     } else {
       setFormData({
-        fname: "",
-        mname: "",
-        lname: "",
+        fName: "",
+        mName: "",
+        lName: "",
         email: "",
         password: "",
-        utype: "",
+        uType: "",
       });
     }
     setErrors({});
@@ -82,8 +82,8 @@ export default function UserFormDialog({
   const validateForm = () => {
     const newErrors = {};
 
-    if (!formData.fname.trim()) newErrors.fname = "First name is required";
-    if (!formData.lname.trim()) newErrors.lname = "Last name is required";
+    if (!formData.fName.trim()) newErrors.fName = "First name is required";
+    if (!formData.lName.trim()) newErrors.lName = "Last name is required";
     if (!formData.email.trim()) {
       newErrors.email = "Email is required";
     } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
@@ -100,7 +100,7 @@ export default function UserFormDialog({
     } else if (!/\d/.test(formData.password)) {
       newErrors.password = "Password must contain at least one number";
     }
-    if (!formData.utype) newErrors.utype = "Type is required";
+    if (!formData.uType) newErrors.uType = "Type is required";
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -113,12 +113,12 @@ export default function UserFormDialog({
     if (validateForm()) {
       // Convert form data to match the expected product format
       const userData = {
-        fname: formData.fname,
-        mname: formData.mname,
-        lname: formData.lname,
+        fName: formData.fName,
+        mName: formData.mName,
+        lName: formData.lName,
         email: formData.email,
         password: formData.password,
-        utype: formData.utype,
+        uType: formData.uType,
       };
 
       onSubmit(userData);
@@ -147,37 +147,37 @@ export default function UserFormDialog({
             className="space-y-4 py-4"
           >
             <div className="space-y-2">
-              <Label htmlFor="fname">First Name</Label>
+              <Label htmlFor="fName">First Name</Label>
               <Input
-                id="fname"
-                value={formData.fname}
-                onChange={(e) => handleChange("fname", e.target.value)}
-                className={errors.fname ? "border-red-500" : ""}
+                id="fName"
+                value={formData.fName}
+                onChange={(e) => handleChange("fName", e.target.value)}
+                className={errors.fName ? "border-red-500" : ""}
               />
-              {errors.fname && (
-                <p className="text-sm text-red-500">{errors.fname}</p>
+              {errors.fName && (
+                <p className="text-sm text-red-500">{errors.fName}</p>
               )}
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="mname">Middle Name</Label>
+              <Label htmlFor="mName">Middle Name</Label>
               <Input
-                id="mname"
-                value={formData.mname}
-                onChange={(e) => handleChange("mname", e.target.value)}
+                id="mName"
+                value={formData.mName}
+                onChange={(e) => handleChange("mName", e.target.value)}
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="lname">Last Name</Label>
+              <Label htmlFor="lName">Last Name</Label>
               <Input
-                id="lname"
-                value={formData.lname}
-                onChange={(e) => handleChange("lname", e.target.value)}
-                className={errors.lname ? "border-red-500" : ""}
+                id="lName"
+                value={formData.lName}
+                onChange={(e) => handleChange("lName", e.target.value)}
+                className={errors.lName ? "border-red-500" : ""}
               />
-              {errors.lname && (
-                <p className="text-sm text-red-500">{errors.lname}</p>
+              {errors.lName && (
+                <p className="text-sm text-red-500">{errors.lName}</p>
               )}
             </div>
 
@@ -209,14 +209,14 @@ export default function UserFormDialog({
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="utype">Type</Label>
+              <Label htmlFor="uType">Type</Label>
               <Select
-                value={formData.utype}
-                onValueChange={(value) => handleChange("utype", value)}
+                value={formData.uType}
+                onValueChange={(value) => handleChange("uType", value)}
               >
                 <SelectTrigger
-                  id="utype"
-                  className={errors.utype ? "border-red-500" : ""}
+                  id="uType"
+                  className={errors.uType ? "border-red-500" : ""}
                 >
                   <SelectValue placeholder="Select user type" />
                 </SelectTrigger>
@@ -225,8 +225,8 @@ export default function UserFormDialog({
                   <SelectItem value="merchant">Merchant</SelectItem>
                 </SelectContent>
               </Select>
-              {errors.utype && (
-                <p className="text-sm text-red-500">{errors.utype}</p>
+              {errors.uType && (
+                <p className="text-sm text-red-500">{errors.uType}</p>
               )}
             </div>
           </form>

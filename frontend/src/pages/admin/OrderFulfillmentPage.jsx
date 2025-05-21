@@ -1,5 +1,3 @@
-"use client";
-
 import { useState, useEffect } from "react";
 import {
   Table,
@@ -85,7 +83,7 @@ const initialOrders = [
   },
 ];
 
-export default function OrderTable() {
+export default function OrderFulfillmentPage() {
   const [data, setData] = useState(initialOrders);
   const [sorting, setSorting] = useState({
     column: null,
