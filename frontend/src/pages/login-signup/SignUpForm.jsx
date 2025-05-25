@@ -15,19 +15,22 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
-import { Mail, Lock } from "lucide-react"
 
-// Validation schema
-const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email" }),
+const signupSchema = z.object({
+  fName: z.string().min(1, { message: "First name is required" }),
+  lName: z.string().min(1, { message: "Last name is required" }),
+  email: z.string().email({ message: "Invalid email address" }),
+  password: z.string().min(6, { message: "Password must be at least 6 characters" }),
 })
 
-export function LoginForm() {
+export function SignUpForm() {
   const navigate = useNavigate()
 
   const form = useForm({
-    resolver: zodResolver(formSchema),
+    resolver: zodResolver(signupSchema),
     defaultValues: {
+      fName: "",
+      lName: "",
       email: "",
       password: "",
     },
@@ -41,18 +44,41 @@ export function LoginForm() {
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+        <FormField
+          control={form.control}
+          name="fName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>First Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="lName"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Last Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
         <FormField
           control={form.control}
           name="email"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                <span className="flex items-center gap-1">
-                <Mail className="w-4 h-4" />
-                  Email
-                </span>
-                </FormLabel>
+              <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input type="email" {...field} />
               </FormControl>
@@ -66,12 +92,7 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                <span className="flex items-center gap-1">
-                <Lock className="w-4 h-4" />
-                  Password
-                </span>
-              </FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
                 <Input type="password" {...field} />
               </FormControl>
@@ -81,7 +102,7 @@ export function LoginForm() {
         />
 
         <Button type="submit" className="w-full">
-          Log In
+          Sign Up
         </Button>
       </form>
     </Form>
