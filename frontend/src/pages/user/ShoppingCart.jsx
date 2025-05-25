@@ -30,7 +30,7 @@ import {
 } from "@/components/ui/drawer";
 
 export default function ShoppingCart() {
-  const { cartItems, removeFromCart, clearCart, increaseQuantity, decreaseQuantity, totalPrice } = useCart();
+  const { cartItems, removeFromCart, clearCart, increaseQuantity, decreaseQuantity, totalPrice, totalQuantity } = useCart();
   const{ placeOrder } = useOrders();
 
   return (
@@ -93,12 +93,17 @@ export default function ShoppingCart() {
             {cartItems.length > 0 && (
               <div className="flex justify-between items-center mt-6 w-full">
                 <div className="flex flex-col gap-2">
-                  <span className="text-xl font-semibold">Total: ₱{totalPrice}</span>
                   <Button onClick={clearCart} variant="outline">Clear Cart</Button>
                 </div>
-                <DrawerTrigger asChild>
-                  <Button>Proceed to Checkout</Button>
-                </DrawerTrigger>
+                <div className="flex justify-end flex-col gap-2 text-right">
+                  <div className="flex justify-end flex-col pr-4">
+                    <span className="text-xl font-semibold">Total: ₱{totalPrice}</span>
+                    <span className="text-sm">{totalQuantity} items</span>
+                  </div>
+                  <DrawerTrigger asChild>
+                    <Button>Proceed to Checkout</Button>
+                  </DrawerTrigger>
+                </div>
               </div>
             )}
           </main>
@@ -127,9 +132,10 @@ export default function ShoppingCart() {
             ))}</ScrollArea>
             
 
-            <div className="p-4">
-              <div className="text-center mb-4">
+            <div className="p-2">
+              <div className="text-center mb-3">
                 <div className="text-2xl font-semibold">Total: ₱{totalPrice}</div>
+                <span className="text-sm">{totalQuantity} items</span>
               </div>
             </div>
 
