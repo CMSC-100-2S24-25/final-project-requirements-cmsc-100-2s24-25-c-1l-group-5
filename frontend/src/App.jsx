@@ -5,6 +5,7 @@ import Home from "./pages/user/HomePage.jsx";
 import ShoppingCart from "./pages/user/ShoppingCart.jsx";
 import OrdersPage from "./pages/user/OrdersPage.jsx";
 import { OrdersList } from "./components/user/OrdersList.jsx";
+import LoginPage from "./pages/login-signup/LoginPage.jsx";
 
 function App() {
   return (
@@ -13,7 +14,7 @@ function App() {
         <OrdersList>
           <Toaster />
           <Routes>
-            <Route path="/" element={<Home />} />
+            <Route path="/" element={<LoginPage />} />
             <Route path="/cart" element={<ShoppingCart />} />
             <Route path="/orders" element={<OrdersPage />} />
           </Routes>
