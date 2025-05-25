@@ -1,16 +1,18 @@
 import { SidebarProvider } from "../../components/ui/sidebar"
 import { AppSidebar } from "../../components/user/UserSideBar"
 import { Button } from "../../components/ui/button"
-import { useCart } from "../../components/user/Cart"; 
-import toast from 'react-hot-toast';
-
+import { useCart } from "../../components/user/Cart";
+import { useState } from "react";
 
 import {
-    DropdownMenu,
-    DropdownMenuTrigger,
-    DropdownMenuContent,
-    DropdownMenuItem,
-} from "@/components/ui/dropdown-menu"
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+
+
 
 import {
     Card,
@@ -28,43 +30,59 @@ const products = [
         name: "Product 1",
         desc: "Description",
         type: "Crop",
-        price: "20",
+        price: 20,
         stock: 100,
-        image: "https://via.placeholder.com/150",
+        image: "",
     },
     {
         id: 2,
         name: "Product 2",
         desc: "Description",
-        price: "35",
+        price: 35,
         stock: 31,
-        image: "https://via.placeholder.com/150",
+        image: "",
     },
     {
         id: 3,
         name: "Product 3",
         desc: "Description",
-        price: "53",
+        price: 53,
         stock: 41,
-        image: "https://via.placeholder.com/150",
+        image: "",
     },
     {
         id: 4,
         name: "Product 4",
         desc: "Description",
-        price: "20",
+        price: 20,
         stock: 31,
-        image: "https://via.placeholder.com/150",
+        image: "",
     },
 ]
 
 export default function Home() {
     const { addToCart } = useCart();
-    
+    const [sortOption, setSortOption] = useState("");
+    const sortedProducts =[...products]; // copy products to new array, where sorting will happen
+
+    if (sortOption === "name-asc") {
+        sortedProducts.sort();
+    } else if (sortOption === "name-desc") {
+        sortedProducts.reverse();
+    } else if (sortOption === "price-asc") {
+        sortedProducts.sort((a, b) => a.price - b.price);
+    } else if (sortOption === "price-desc") {
+        sortedProducts.sort((a, b) => b.price - a.price);
+    } else if (sortOption === "qty-asc") {
+        sortedProducts.sort((a, b) => a.stock - b.stock);
+    } else if (sortOption === "qty-desc") {
+        sortedProducts.sort((a, b) => b.stock - a.stock);
+    } // sorting the products
+
     return (
         <SidebarProvider>
             <div className="flex min-h-screen w-full">
-                <div className="w-64">
+                <div className="w-48">
                     <AppSidebar />
                 </div>
 
@@ -74,8 +92,24 @@ export default function Home() {
 
                     <div className="border-b border-gray-300 my-6"></div>
 
+                    <div>
+                        <Select onValueChange={setSortOption}>
+                            <SelectTrigger className="w-[200px]">
+                                <SelectValue placeholder="Sort By" />
+                            </SelectTrigger>
+                            <SelectContent>
+                                <SelectItem value="name-asc">Name (Ascending)</SelectItem>
+                                <SelectItem value="name-desc">Name (Descending)</SelectItem>
+                                <SelectItem value="price-asc">Price: Low to High</SelectItem>
+                                <SelectItem value="price-desc">Price: High to Low</SelectItem>
+                                <SelectItem value="qty-asc">Quantity: Low to High</SelectItem>
+                                <SelectItem value="qtydesc">Quantity: High to Low</SelectItem>
+                            </SelectContent>
+                        </Select>
+                    </div>
+
                     <div className="grid grid-cols-4 gap-6 mt-6">
-                        {products.map((product) => (
+                        {sortedProducts.map((product) => (
                             <Card key={product.id}>
                                 <CardHeader>
                                     <img
@@ -95,9 +129,8 @@ export default function Home() {
 
                                 <CardFooter className="flex justify-between items-center">
                                     Stock: {product.stock ?? "N/A"}
-                                    <Button onClick={() => {
+                                    <Button className="w-full sm:w-auto" onClick={() => {
                                         addToCart(product);
-                                        toast(`${product.name} added to cart!`,{position: 'bottom-right'});
                                     }}>Add to Cart</Button>
                                 </CardFooter>
                             </Card>

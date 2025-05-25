@@ -1,4 +1,5 @@
 import React, { createContext, useContext, useState } from "react";
+import toast from 'react-hot-toast';
 
 const CartContext = createContext(); // use context to pass data around without passing props
 
@@ -20,6 +21,7 @@ export const Cart = ({ children }) => {
         return [...prevItems, { ...product, quantity: 1, itemPrice: product.price }];
       }
     });
+    toast(`${product.name} added to cart!`,{position: 'top-right'});
   };
 
   const removeFromCart = (productId) => {
@@ -55,7 +57,7 @@ export const Cart = ({ children }) => {
   }
 
   const clearCart = () => {
-    setCartItems([]); // set crt to empty
+    setCartItems([]); // set cart to empty
   };
 
   const totalPrice = cartItems.reduce(
@@ -63,9 +65,14 @@ export const Cart = ({ children }) => {
     0
   ); // compute for total price
 
+  const totalQuantity = cartItems.reduce(
+    (acc, item) => acc + (item.quantity || 0),
+    0
+  ); // compute for total quantity
+
 
   return (
-    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, totalPrice }}>
+    <CartContext.Provider value={{ cartItems, addToCart, removeFromCart, increaseQuantity, decreaseQuantity, clearCart, totalPrice, totalQuantity }}>
       {children}
     </CartContext.Provider>
   );
