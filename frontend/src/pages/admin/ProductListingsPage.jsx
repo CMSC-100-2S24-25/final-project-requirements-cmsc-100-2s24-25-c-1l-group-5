@@ -34,6 +34,8 @@ import {
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ProductFormDialog from "./ProductFormDialog";
 import toast from "react-hot-toast";
+import { AdminSidebar } from "../../components/admin/AdminSidebar";
+import { SidebarProvider } from "../../components/ui/sidebar";
 
 // Sample product data
 const initialProducts = [

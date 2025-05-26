@@ -1,9 +1,11 @@
 "use client"
-
+import { useState, useEffect } from "react"
+import axios from "axios"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useNavigate } from "react-router-dom"
+import toast from 'react-hot-toast';
 
 import { Button } from "@/components/ui/button"
 import {
@@ -19,11 +21,30 @@ import { Mail, Lock } from "lucide-react"
 
 // Validation schema
 const formSchema = z.object({
-  email: z.string().email({ message: "Invalid email" }),
+  email: z.string().email({ message: "Invalid email" }).min(1, { message: "Email is required" }),
+  password: z.string().min(1, { message: "Password is required" }),
 })
+
+
 
 export function LoginForm() {
   const navigate = useNavigate()
+  const [showPassword, setShowPassword] = useState(false)
+
+  useEffect(() => {
+    fetchUsers();
+  }, [])
+
+  const fetchUsers = () => {
+    axios
+      .get("http://localhost:3000/auth/users")
+      .then((response) => {
+        console.log("Fetched users:", response.data)
+      })
+      .catch((error) => {
+        console.error("Error fetching users:", error)
+      })
+  }
 
   const form = useForm({
     resolver: zodResolver(formSchema),
@@ -34,9 +55,25 @@ export function LoginForm() {
   })
 
   const onSubmit = (data) => {
-    // insert the authentication method/function here
-    localStorage.setItem("user", JSON.stringify(data))
-    navigate("/homepage")
+    axios
+      .post("http://localhost:3000/auth/login", data)
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        localStorage.setItem("userType", res.data.userType);
+        toast.success("Login successful!", { position: 'top-right' })
+        if (res.data.userType === "merchant") {
+          navigate("/admin/products");
+        } else if (res.data.userType === "customer") {
+          navigate("/homepage");
+        } else {
+          navigate("/");
+        }
+      })
+      .catch((error) => {
+        const errorMsg = error.response?.data?.error || "Login failed. Please try again."
+        toast.error(errorMsg, { position: 'top-right' })
+        console.error("Error logging in:", error)
+      }) 
   }
 
   return (
@@ -66,14 +103,32 @@ export function LoginForm() {
           name="password"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>
-                <span className="flex items-center gap-1">
-                <Lock className="w-4 h-4" />
-                  Password
-                </span>
-              </FormLabel>
+              <FormLabel>Password</FormLabel>
               <FormControl>
-                <Input type="password" {...field} />
+                <div style={{ position: "relative" }}>
+                  <Input
+                    type={showPassword ? "text" : "password"}
+                    {...field}
+                    style={{ paddingRight: "2.5rem" }}
+                  />
+                  <Button
+                    type="button"
+                    onClick={() => setShowPassword(!showPassword)}
+                    style={{
+                      position: "absolute",
+                      right: "0.5rem",
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                      background: "transparent",
+                      boxShadow: "none",
+                      color: "#007bff",
+                      textShadow: "1px 1px 2px rgba(0,0,0,0.2)",
+                      fontWeight: "bold",
+                    }}
+                  >
+                    {showPassword ? "Hide" : "Show"}
+                  </Button>
+                </div>
               </FormControl>
               <FormMessage />
             </FormItem>

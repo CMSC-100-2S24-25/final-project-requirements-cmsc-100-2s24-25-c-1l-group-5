@@ -33,6 +33,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { AdminSidebar } from "../../components/admin/AdminSidebar";
+import { SidebarProvider } from "../../components/ui/sidebar";
 
 // Sample order data
 const initialOrders = [

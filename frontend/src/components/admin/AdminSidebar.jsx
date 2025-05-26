@@ -1,9 +1,7 @@
-import { List, ShoppingBasket, Package, LogOut } from "lucide-react"
-import { Link, useNavigate } from "react-router-dom"
-
+import { List, Users, BarChart, Package, LogOut } from "lucide-react";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Sidebar,
-  SidebarProvider,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
@@ -11,45 +9,51 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar"
+  SidebarProvider,
+} from "@/components/ui/sidebar";
+import { Button } from "@/components/ui/button";
 
-import { Button } from "@/components/ui/button"
-
-const items = [
+const adminItems = [
   {
-    title: "Product Listing",
-    url: "/homepage",
+    title: "Product Listings",
+    url: "/admin/products",
     icon: List,
   },
   {
-    title: "Shopping Cart",
-    url: "/cart",
-    icon: ShoppingBasket,
-  },
-  {
-    title: "Orders",
-    url: "/orders",
+    title: "Order Fulfillment",
+    url: "/admin/orders",
     icon: Package,
   },
-]
+  {
+    title: "Sales Report",
+    url: "/admin/sales-report",
+    icon: BarChart,
+  },
+  {
+    title: "User Management",
+    url: "/admin/users",
+    icon: Users,
+  },
+];
 
-export function AppSidebar() {
+export function AdminSidebar() {
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    localStorage.removeItem("userType");
     navigate("/login");
-  }
+  };
 
   return (
     <SidebarProvider>
-      <Sidebar className="w-48 h-screen flex flex-col">
+      <Sidebar className="w-56 h-screen flex flex-col">
         <SidebarContent className="flex flex-col h-full">
           <SidebarGroup className="flex-1 flex flex-col">
-            <SidebarGroupLabel>Website Name</SidebarGroupLabel>
+            <SidebarGroupLabel>Admin Panel</SidebarGroupLabel>
             <SidebarGroupContent className="flex-1 flex flex-col">
               <SidebarMenu className="flex-1 flex flex-col">
-                {items.map((item) => (
+                {adminItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
                       <Link to={item.url} className="flex items-center gap-2">

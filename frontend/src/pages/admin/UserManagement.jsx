@@ -25,6 +25,8 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import UserFormDialog from "./UserFormDialog";
+import { AdminSidebar } from "../../components/admin/AdminSidebar";
+import { SidebarProvider } from "../../components/ui/sidebar";
 
 // Sample user data
 const initialUsers = [
