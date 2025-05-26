@@ -3,6 +3,8 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import cors from 'cors';
+import bodyParser from 'body-parser';
 
 // Import routes
 import authRoutes from './server/routes/authRoutes.js'
@@ -10,9 +12,11 @@ import productRoutes from './server/routes/productRoutes.js';
 import orderRoutes from './server/routes/orderRoutes.js';
 
 const app = express();
-dotenv.config();
+dotenv.config({ path: '../.env' });
 
 // Middleware
+app.use(cors());
+app.use(bodyParser.json());
 app.use(express.json()); 
 app.use(express.urlencoded({ extended: false }));
 
@@ -33,9 +37,13 @@ const connectDB = async () => {
 connectDB();
 
 // Routes
-app.use('/api/auth', authRoutes);
-app.use('/api/products', productRoutes);
-app.use('/api/orders', orderRoutes);
+app.post('/auth/test', (req, res) => {
+  res.json({ message: "Test route hit!" });
+});
+
+app.use('/auth', authRoutes);
+app.use('/products', productRoutes);
+app.use('/orders', orderRoutes);
 
 // Basic endpoint
 app.get('/', (req, res) => {
@@ -46,4 +54,3 @@ const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`SERVER CONNECTED ON ==> http://localhost:${PORT}/`);
 });
-
