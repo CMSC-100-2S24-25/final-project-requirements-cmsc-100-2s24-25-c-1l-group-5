@@ -1,8 +1,9 @@
-import { List, ShoppingBasket, Package } from "lucide-react"
-import { Link } from "react-router-dom" // Use Link for navigation
+import { List, ShoppingBasket, Package, LogOut } from "lucide-react"
+import { Link, useNavigate } from "react-router-dom"
 
 import {
   Sidebar,
+  SidebarProvider,
   SidebarContent,
   SidebarGroup,
   SidebarGroupContent,
@@ -11,6 +12,8 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+
+import { Button } from "@/components/ui/button"
 
 const items = [
   {
@@ -31,27 +34,50 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  }
+
   return (
-    <Sidebar className="w-48">
-      <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Website Name</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+    <SidebarProvider>
+      <Sidebar className="w-48 h-screen flex flex-col">
+        <SidebarContent className="flex flex-col h-full">
+          <SidebarGroup className="flex-1 flex flex-col">
+            <SidebarGroupLabel>Website Name</SidebarGroupLabel>
+            <SidebarGroupContent className="flex-1 flex flex-col">
+              <SidebarMenu className="flex-1 flex flex-col">
+                {items.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton asChild>
+                      <Link to={item.url} className="flex items-center gap-2">
+                        <item.icon size={20} />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+                ))}
+                <div className="flex-1" />
+                {/* Logout Button at the bottom */}
+                <SidebarMenuItem>
                   <SidebarMenuButton asChild>
-                    <Link to={item.url} className="flex items-center gap-2">
-                      <item.icon size={20} />
-                      <span>{item.title}</span>
-                    </Link>
+                    <Button
+                      variant="ghost"
+                      className="flex items-center gap-2 w-full justify-start text-red-600"
+                      onClick={handleLogout}
+                    >
+                      <LogOut size={20} />
+                      <span>Logout</span>
+                    </Button>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
-      </SidebarContent>
-    </Sidebar>
+              </SidebarMenu>
+            </SidebarGroupContent>
+          </SidebarGroup>
+        </SidebarContent>
+      </Sidebar>
+    </SidebarProvider>
   );
 }
