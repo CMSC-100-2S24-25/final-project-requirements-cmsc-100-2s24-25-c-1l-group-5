@@ -17,6 +17,8 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, Package, ShoppingCart, TrendingUp } from "lucide-react";
 import { BarChart } from "../../components/admin/BarChart";
+import { AdminSidebar } from "../../components/admin/AdminSidebar";
+import { SidebarProvider } from "../../components/ui/sidebar";
 
 // Mock data for
 const timePeriodsData = {
