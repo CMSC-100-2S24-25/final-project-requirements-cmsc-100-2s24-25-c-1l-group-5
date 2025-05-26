@@ -38,7 +38,7 @@ export default function ShoppingCart() {
       <Drawer>
         <div className="flex min-h-screen w-full">
           <div className="w-48">
-            <AppSidebar />
+            <AppSidebar userType="customer" />
           </div>
 
           <main className="flex-1 p-10 bg-gray-50">

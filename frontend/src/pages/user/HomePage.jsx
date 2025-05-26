@@ -83,7 +83,7 @@ export default function Home() {
         <SidebarProvider>
             <div className="flex min-h-screen w-full">
                 <div className="w-48">
-                    <AppSidebar  userType="user" />
+                    <AppSidebar  userType="customer" />
                 </div>
 
                 <main className="flex-1 p-10 bg-gray-50">
