@@ -1,5 +1,5 @@
 import { SidebarProvider } from "../../components/ui/sidebar"
-import { AppSidebar } from "../../components/user/UserSideBar"
+import { AppSidebar } from "../../components/SideBar"
 import { Button } from "../../components/ui/button"
 import { useOrders } from "../../components/user/OrdersList";
 import toast from 'react-hot-toast';
@@ -20,7 +20,7 @@ export default function OrdersPage() {
     <SidebarProvider>
       <div className="flex min-h-screen w-full">
         <div className="w-48">
-          <AppSidebar />
+          <AppSidebar userType="admin"/>
         </div>
 
         <main className="flex-1 p-10 bg-gray-50">

@@ -1,4 +1,4 @@
-import { List, ShoppingBasket, Package } from "lucide-react"
+import { List, ShoppingBasket, Package, Users, BarChart2 } from "lucide-react"
 import { Link } from "react-router-dom" // Use Link for navigation
 
 import {
@@ -12,7 +12,32 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 
-const items = [
+
+const adminMenu = [
+  {
+    title: "Order Fulfillment",
+    url: "/order-fulfillment",
+    icon: Package,
+  },
+  {
+    title: "Product Listings",
+    url: "/product-listing",
+    icon: List,
+  },
+  {
+    title: "User Management",
+    url: "/user-management",
+    icon: Users,
+  },
+  {
+    title: "Sales Dashboard",
+    url: "/sales",
+    icon: BarChart2,
+  },
+];
+
+
+const userMenu = [
   {
     title: "Product Listing",
     url: "/homepage",
@@ -30,15 +55,18 @@ const items = [
   },
 ]
 
-export function AppSidebar() {
-  return (
+
+
+export function AppSidebar({userType}) {
+  const menuItems = userType === "admin" ? adminMenu : userMenu;
+    return (
     <Sidebar className="w-48">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Website Name</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => (
+              {menuItems.map((item) => (
                 <SidebarMenuItem key={item.title}>
                   <SidebarMenuButton asChild>
                     <Link to={item.url} className="flex items-center gap-2">
@@ -53,5 +81,5 @@ export function AppSidebar() {
         </SidebarGroup>
       </SidebarContent>
     </Sidebar>
-  );
+    );
 }

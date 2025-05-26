@@ -1,5 +1,5 @@
 import { SidebarProvider } from "../../components/ui/sidebar"
-import { AppSidebar } from "../../components/user/UserSideBar"
+import { AppSidebar } from "../../components/SideBar"
 import { Button } from "../../components/ui/button"
 import { useCart } from "../../components/user/Cart";
 import { useState } from "react";
@@ -83,7 +83,7 @@ export default function Home() {
         <SidebarProvider>
             <div className="flex min-h-screen w-full">
                 <div className="w-48">
-                    <AppSidebar />
+                    <AppSidebar  userType="user" />
                 </div>
 
                 <main className="flex-1 p-10 bg-gray-50">

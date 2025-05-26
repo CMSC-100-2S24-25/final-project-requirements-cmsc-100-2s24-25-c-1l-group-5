@@ -236,6 +236,11 @@ export default function ProductListingsPage() {
     setDialogOpen(true);
   };
 
+  const handleDialogCase =() =>{
+    setDialogOpen(false);
+    setEditingProduct(null);
+  }
+
   // Handle opening add dialog
   const handleAdd = () => {
     setEditingProduct(null);
@@ -442,7 +447,7 @@ export default function ProductListingsPage() {
         {/* Product Form Dialog */}
         <ProductFormDialog
           open={dialogOpen}
-          onOpenChange={setDialogOpen}
+          onOpenChange={handleDialogCase}
           initialData={editingProduct}
           onSubmit={handleFormSubmit}
         />
