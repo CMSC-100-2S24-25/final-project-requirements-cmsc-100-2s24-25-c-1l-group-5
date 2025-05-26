@@ -34,10 +34,25 @@ export function LoginForm() {
   })
 
   const onSubmit = (data) => {
-    // insert the authentication method/function here
-    localStorage.setItem("user", JSON.stringify(data))
-    navigate("/homepage")
+  // Get registered user from localStorage
+  const storedUser = localStorage.getItem("user");
+
+  if (!storedUser) {
+    alert("No user found. Please sign up first.");
+    return;
   }
+
+  const user = JSON.parse(storedUser);
+
+  // Check if email and password match
+  if (user.email === data.email && user.password === data.password) {
+    // Save logged-in user info to localStorage (simulate session)
+    localStorage.setItem("loggedInUser", JSON.stringify(user));
+    navigate("/homepage");
+  } else {
+    alert("Invalid email or password");
+  }
+};
 
   return (
     <Form {...form}>

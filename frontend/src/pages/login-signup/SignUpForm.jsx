@@ -36,11 +36,29 @@ export function SignUpForm() {
     },
   })
 
-  const onSubmit = (data) => {
-    // insert the authentication method/function here
-    localStorage.setItem("user", JSON.stringify(data))
-    navigate("/homepage")
+  const onSubmit = async (data) => {
+  try {
+    const res = await fetch("http://localhost:3000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.error || "Signup failed");
+    }
+
+    const result = await res.json();
+    localStorage.setItem("user", JSON.stringify(result)); // Store returned user info or token
+    navigate("/homepage");
+  } catch (err) {
+    alert(err.message);
   }
+};
+
 
   return (
     <Form {...form}>

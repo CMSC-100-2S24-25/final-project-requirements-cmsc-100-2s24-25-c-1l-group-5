@@ -22,10 +22,10 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Upload, Link } from "lucide-react";
 
 export default function ProductFormDialog({
-  open,
-  onOpenChange,
-  initialData,
-  onSubmit,
+  open={dialogOpen},
+  onOpenChange={setDialogOpen},
+  initialData={editingProduct},
+  onSubmit={saveProduct}
 }) {
   // Form state
   const [formData, setFormData] = useState({
@@ -34,7 +34,7 @@ export default function ProductFormDialog({
     type: "",
     price: "",
     qty: "",
-    imageUrl: "",
+    imageURL: "",
   });
 
   // Image upload state
@@ -49,7 +49,7 @@ export default function ProductFormDialog({
   useEffect(() => {
     if (initialData) {
       setFormData({
-        id: initialData.id,
+        id: initialData._id,
         name: initialData.name,
         desc: initialData.description,
         type:
@@ -59,10 +59,10 @@ export default function ProductFormDialog({
             ? "2"
             : "",
         price: initialData.price.toString(),
-        qty: initialData.quantity.toString(),
-        imageUrl: initialData.imageUrl || "",
+        qty: initialData.qty.toString(),
+        imageURL: initialData.imageURL || "",
       });
-      setImagePreview(initialData.imageUrl || null);
+      setImagePreview(initialData.imageURL || null);
     } else {
       setFormData({
         name: "",
@@ -70,7 +70,7 @@ export default function ProductFormDialog({
         type: "",
         price: "",
         qty: "",
-        imageUrl: "",
+        imageURL: "",
       });
       setImagePreview(null);
     }
@@ -96,7 +96,7 @@ export default function ProductFormDialog({
   // Handle image URL change
   const handleImageUrlChange = (e) => {
     const url = e.target.value;
-    handleChange("imageUrl", url);
+    handleChange("imageURL", url);
     setImagePreview(url);
   };
 
@@ -128,7 +128,7 @@ export default function ProductFormDialog({
     reader.onload = (event) => {
       const dataUrl = event.target.result;
       setImagePreview(dataUrl);
-      handleChange("imageUrl", dataUrl);
+      handleChange("imageURL", dataUrl);
     };
     reader.readAsDataURL(file);
   };
@@ -162,25 +162,32 @@ export default function ProductFormDialog({
   };
 
   // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (validateForm()) {
-      // Convert form data to match the expected product format
-      const productData = {
-        id: formData.id || Date.now().toString(),
-        name: formData.name,
-        description: formData.desc,
-        type: formData.type === "1" ? "Crop" : "Poultry",
-        price: Number.parseFloat(formData.price),
-        quantity: Number.parseInt(formData.qty, 10),
-        imageUrl: formData.imageUrl,
-      };
+  if (validateForm()) {
+    const productData = {
+      id: formData.id || Date.now().toString(),
+      name: formData.name,
+      description: formData.desc,
+      type: Number(formData.type), // ✅ Ensure type is a number: 1 or 2
+      price: Number.parseFloat(formData.price),
+      qty: Number.parseInt(formData.qty, 10),
+      imageURL: formData.imageURL,
+    };
 
-      onSubmit(productData);
+    console.log("Submitting product:", formData);
+
+    try {
+      await onSubmit(productData);
       onOpenChange(false);
+    } catch (error) {
+      // Handle submission error here if you want to show a message or log
+      console.error("Failed to save product:", error);
     }
-  };
+  }
+};
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -238,9 +245,9 @@ export default function ProductFormDialog({
                 </TabsList>
                 <TabsContent value="url" className="space-y-2 pt-2">
                   <Input
-                    id="imageUrl"
+                    id="imageURL"
                     placeholder="Enter image URL"
-                    value={formData.imageUrl}
+                    value={formData.imageURL}
                     onChange={handleImageUrlChange}
                   />
                 </TabsContent>

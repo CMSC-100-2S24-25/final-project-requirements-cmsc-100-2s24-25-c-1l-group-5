@@ -80,7 +80,7 @@ export default function ShoppingCart() {
 
 
                       <CardFooter className="flex justify-between items-center">
-                        <Button onClick={() => removeFromCart(item.id)} variant="secondary" size="sm">
+                        <Button onClick={() => removeFromCart(item._id)} variant="secondary" size="sm">
                           Remove
                         </Button>
                       </CardFooter>
@@ -118,7 +118,7 @@ export default function ShoppingCart() {
 
             <ScrollArea className="h-[200px] w-[350px] p-1">
               {cartItems.map((item) => (
-                <Card className="mb-1" key={item.id}>
+                <Card className="mb-1" key={item._id}>
                   <CardContent>
                     <li className="flex justify-between list-none">
                       <div>

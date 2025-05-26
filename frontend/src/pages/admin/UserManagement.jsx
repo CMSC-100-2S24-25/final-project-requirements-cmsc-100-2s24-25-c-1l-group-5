@@ -76,15 +76,26 @@ const initialUsers = [
 ];
 
 export default function UserManagementPage() {
-  const [data, setData] = useState(initialUsers);
+  useEffect(() => {
+  fetchUsers();
+}, []);
+
+  const [data, setData] = useState([]);
   const [sorting, setSorting] = useState({
     column: null,
     direction: "asc",
   });
 
+  const fetchUsers = async () => {
+  const res = await fetch('http://localhost:3000/api/users');
+  const data = await res.json();
+  setData(data.users);
+};
+
+
   // Search state
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(initialUsers);
+  const [filteredData, setFilteredData] = useState([]);
 
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
@@ -155,7 +166,7 @@ export default function UserManagementPage() {
 
   // Handle opening edit dialog
   const handleEdit = (id) => {
-    const userToEdit = data.find((user) => user.id === id);
+    const userToEdit = data.find((user) => user._id === id);
     setEditingUser(userToEdit);
     setDialogOpen(true);
   };
@@ -167,22 +178,49 @@ export default function UserManagementPage() {
   };
 
   // Handle delete action
-  const handleDelete = (id) => {
-    setData(data.filter((user) => user.id !== id));
-  };
+  const handleDelete = async (id) => {
+  try {
+    const res = await fetch(`http://localhost:3000/api/users/${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) throw new Error("Failed to delete user");
+    setData(data.filter((user) => user._id !== id));
+  } catch (err) {
+    console.error(err);
+  }
+};
+
 
   // Handle form submission (both add and edit)
-  const handleFormSubmit = (userData) => {
-    if (editingUser) {
-      // Update existing user
-      setData((prevData) =>
-        prevData.map((item) => (item.id === userData.id ? userData : item))
-      );
+  const handleFormSubmit = async (userData) => {
+  try {
+    if (userData._id) {
+      // Update user
+      await fetch(`/api/users/${userData._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
     } else {
-      // Add new user
-      setData((prevData) => [...prevData, userData]);
+      // Create user
+      await fetch("http://localhost:3000/api/users", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(userData),
+      });
     }
-  };
+
+    // Refetch user list or update UI
+    fetchUsers();
+  } catch (error) {
+    console.error("Error saving user:", error);
+  }
+};
+
 
   return (
     <div className="m-12">
@@ -253,7 +291,7 @@ export default function UserManagementPage() {
               <TableBody>
                 {paginatedData.length > 0 ? (
                   paginatedData.map((user) => (
-                    <TableRow key={user.id}>
+                    <TableRow key={user._id || user.email}>
                       <TableCell className="font-medium">
                         {user.fName}
                       </TableCell>
@@ -262,8 +300,8 @@ export default function UserManagementPage() {
                       <TableCell>{user.email}</TableCell>
                       <TableCell>{user.password}</TableCell>
                       <TableCell>
-                        {user.uType.charAt(0).toUpperCase()}
-                        {user.uType.slice(1)}
+                        {user.uType?.charAt(0).toUpperCase() ?? "U"}
+                        {user.uType?.slice(1) || ""}
                       </TableCell>
                       <TableCell>
                         <DropdownMenu>
@@ -275,12 +313,12 @@ export default function UserManagementPage() {
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
                             <DropdownMenuItem
-                              onClick={() => handleEdit(user.id)}
+                              onClick={() => handleEdit(user._id)}
                             >
                               Edit
                             </DropdownMenuItem>
                             <DropdownMenuItem
-                              onClick={() => handleDelete(user.id)}
+                              onClick={() => handleDelete(user._id)}
                               className="text-destructive focus:text-destructive"
                             >
                               Delete

@@ -1,15 +1,13 @@
-// server/models/User.js
-import mongoose from 'mongoose';//import
+import mongoose from 'mongoose';
+
 const userSchema = new mongoose.Schema({
-  fName: { type: String, required: true },//first name
-  mName: { type: String, required: false },//middle name (optional)
-  lName: { type: String, required: true },//last name
-  email: { type: String, required: true, unique: true },//email
-  password: { type: String, required: true },//password
-  uType: {//user type
-    type: String,
-    enum: ['customer', 'merchant'],//choices
-    default: 'customer'//default
-  }
+  firstName: String,
+  middleName: String,
+  lastName: String,
+  email: { type: String, unique: true },
+  password: String,
+  userType: { type: String, default: 'customer' }
 });
-export default mongoose.model('User', userSchema, "users"); //export
+
+const User = mongoose.model('User', userSchema);
+export default User;

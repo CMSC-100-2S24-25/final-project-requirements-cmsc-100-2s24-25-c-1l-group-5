@@ -1,11 +1,12 @@
-// server/models/Order.js
-import mongoose from 'mongoose';//import
-const ordSchema = new mongoose.Schema({
-  prodId: { type: String, required: true },//product id
-  qty: { type: Number, required: true },//quantity
-  status: { type: Number, default: 0, enum: [0, 1, 2] },//status, 1-pending, 2-completed, 3-canceled
-  email: { type: String, required: true },//email
-  date: { type: Date, required: true, default: Date.now },//default current date
-  time: { type: String, required: true }//time
+import mongoose from 'mongoose';
+
+const orderSchema = new mongoose.Schema({
+  productId: { type: mongoose.Schema.Types.ObjectId, ref: 'Product' },
+  quantity: Number,
+  status: { type: Number, default: 0 },
+  email: String,
+  orderedAt: { type: Date, default: Date.now }
 });
-export default mongoose.model('Order', ordSchema, "orders");//export
+
+const Order = mongoose.model('Order', orderSchema);
+export default Order;
