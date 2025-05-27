@@ -35,6 +35,7 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AdminSidebar } from "../../components/admin/AdminSidebar";
 import { SidebarProvider } from "../../components/ui/sidebar";
+import { AppSidebar } from "../../components/SideBar";
 
 export default function OrderFulfillmentPage() {
   const [data, setData] = useState([]);
@@ -155,6 +156,11 @@ export default function OrderFulfillmentPage() {
   const cancelledCount = data.filter(o => o.status === 2).length;
 
   return (
+    <SidebarProvider>
+          <div className="flex min-h-screen w-full">
+                  <div className="w-48">
+                    <AppSidebar />
+                  </div>
     <div className="m-12">
       <div className="mt-2 mb-8">
         <h2 className="text-3xl font-semibold">Order Fulfillment</h2>
@@ -348,5 +354,7 @@ export default function OrderFulfillmentPage() {
         </CardFooter>
       </Card>
     </div>
+    </div>
+    </SidebarProvider>
   );
 }

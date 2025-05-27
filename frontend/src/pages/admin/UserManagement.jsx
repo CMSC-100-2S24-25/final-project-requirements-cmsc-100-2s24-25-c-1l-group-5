@@ -25,7 +25,7 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import UserFormDialog from "./UserFormDialog";
-import { AdminSidebar } from "../../components/admin/AdminSidebar";
+import { AppSidebar } from "../../components/SideBar";
 import { SidebarProvider } from "../../components/ui/sidebar";
 
 // Sample user data
@@ -225,6 +225,11 @@ export default function UserManagementPage() {
 
 
   return (
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+              <div className="w-48">
+                <AppSidebar />
+              </div>
     <div className="m-12">
       <div className="mt-2 mb-8">
         <h2 className="text-3xl font-semibold">User Management</h2>
@@ -392,5 +397,7 @@ export default function UserManagementPage() {
         />
       </Card>
     </div>
+    </div>
+    </SidebarProvider>
   );
 }

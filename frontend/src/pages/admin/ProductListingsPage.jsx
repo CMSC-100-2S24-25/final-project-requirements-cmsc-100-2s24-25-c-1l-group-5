@@ -38,6 +38,7 @@ import ProductFormDialog from "./ProductFormDialog";
 import toast from "react-hot-toast";
 import { AdminSidebar } from "../../components/admin/AdminSidebar";
 import { SidebarProvider } from "../../components/ui/sidebar";
+import { AppSidebar } from "../../components/SideBar";
 
 export default function ProductListingsPage() {
   const [data, setData] = useState([]);
@@ -176,7 +177,12 @@ export default function ProductListingsPage() {
 };
 
   return (
-    <div className="m-12">
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+              <div className="w-48">
+                <AppSidebar />
+              </div>
+              <div className="m-12">
       <div className="mt-2 mb-8">
         <h2 className="text-3xl font-semibold">Product Inventory</h2>
         <p className="mt-4 text-gray-500">
@@ -357,5 +363,7 @@ export default function ProductListingsPage() {
         />
       </Card>
     </div>
+      </div>
+      </SidebarProvider>
   );
 }

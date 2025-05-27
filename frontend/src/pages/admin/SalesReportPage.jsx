@@ -17,8 +17,8 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, Package, ShoppingCart, TrendingUp } from "lucide-react";
 import { BarChart } from "../../components/admin/BarChart";
-import { AdminSidebar } from "../../components/admin/AdminSidebar";
 import { SidebarProvider } from "../../components/ui/sidebar";
+import { AppSidebar } from "../../components/SideBar";
 
 // Mock data for
 const timePeriodsData = {
@@ -242,6 +242,11 @@ export default function DashboardPage() {
   const data = timePeriodsData[timePeriod];
 
   return (
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+              <div className="w-48">
+                <AppSidebar />
+              </div>
     <div className="space-y-4">
       <div className="flex flex-row justify-end gap-4">
         <Tabs
@@ -379,7 +384,8 @@ export default function DashboardPage() {
         </CardContent>
       </Card>
       </div>
-      
     </div>
+    </div>
+    </SidebarProvider>
   );
 }

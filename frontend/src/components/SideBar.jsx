@@ -19,22 +19,22 @@ import { Button } from "@/components/ui/button"
 const adminMenu = [
   {
     title: "Order Fulfillment",
-    url: "/order-fulfillment",
+    url: "/admin/orders",
     icon: Package,
   },
   {
     title: "Product Listings",
-    url: "/product-listing",
+    url: "/admin/products",
     icon: List,
   },
   {
     title: "User Management",
-    url: "/user-management",
+    url: "/admin/users",
     icon: Users,
   },
   {
     title: "Sales Dashboard",
-    url: "/sales",
+    url: "/admin/sales-report",
     icon: BarChart2,
   },
 ];
