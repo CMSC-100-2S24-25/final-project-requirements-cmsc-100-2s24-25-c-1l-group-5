@@ -77,7 +77,7 @@ export function AppSidebar() {
       <Sidebar className="w-48 h-screen flex flex-col">
         <SidebarContent className="flex flex-col h-full">
           <SidebarGroup className="flex-1 flex flex-col">
-            <SidebarGroupLabel>Website Name</SidebarGroupLabel>
+            <SidebarGroupLabel>FreshlyPicked</SidebarGroupLabel>
             <SidebarGroupContent className="flex-1 flex flex-col">
               <SidebarMenu className="flex-1 flex flex-col">
                 {menuItems.map((item) => (
