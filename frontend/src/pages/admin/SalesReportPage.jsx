@@ -17,6 +17,8 @@ import {
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Users, Package, ShoppingCart, TrendingUp } from "lucide-react";
 import { BarChart } from "../../components/admin/BarChart";
+import { SidebarProvider } from "../../components/ui/sidebar";
+import { AppSidebar } from "../../components/SideBar";
 
 // Mock data for
 const timePeriodsData = {
@@ -240,144 +242,161 @@ export default function DashboardPage() {
   const data = timePeriodsData[timePeriod];
 
   return (
-    <div className="space-y-4">
-      <div className="flex flex-row justify-end gap-4">
-        <Tabs
-          value={timePeriod}
-          onValueChange={setTimePeriod}
-          className="w-full sm:w-auto"
-        >
-          <TabsList className="grid w-full grid-cols-3">
-            <TabsTrigger value="weekly">Weekly</TabsTrigger>
-            <TabsTrigger value="monthly">Monthly</TabsTrigger>
-            <TabsTrigger value="yearly">Yearly</TabsTrigger>
-          </TabsList>
-        </Tabs>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+        <div className="w-48">
+          <AppSidebar userType="admin" />
+        </div>
+        <div className="w-full p-12 space-y-4">
+          <div>
+            <h2 className="text-3xl font-semibold">Sales Overview</h2>
+            <p className="mt-4 text-gray-500">
+              View and analyze sales data across different time periods. Use the
+              tabs to switch between weekly, monthly, and yearly reports.
+            </p>
+          </div>
+          <div className="flex flex-row justify-end gap-4">
+            <Tabs
+              value={timePeriod}
+              onValueChange={setTimePeriod}
+              className="w-full sm:w-auto"
+            >
+              <TabsList className="grid w-full grid-cols-3">
+                <TabsTrigger value="weekly">Weekly</TabsTrigger>
+                <TabsTrigger value="monthly">Monthly</TabsTrigger>
+                <TabsTrigger value="yearly">Yearly</TabsTrigger>
+              </TabsList>
+            </Tabs>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Total Products
+                </CardTitle>
+                <Package className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">
+                  {data.totalProducts.value}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Total Sales
+                </CardTitle>
+                <ShoppingCart className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">
+                  $
+                  {data.totalSales.value.toLocaleString(undefined, {
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                  })}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Total Transactions
+                </CardTitle>
+                <TrendingUp className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">
+                  {data.totalTransactions.value}
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium text-muted-foreground">
+                  Total Customers
+                </CardTitle>
+                <Users className="h-4 w-4 text-muted-foreground" />
+              </CardHeader>
+              <CardContent>
+                <div className="text-3xl font-bold">
+                  {data.totalCustomers.value.toLocaleString()}
+                </div>
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
+            <Card className="col-span-3 h-auto">
+              <CardHeader>
+                <CardTitle>Sales Overview</CardTitle>
+                <CardDescription>
+                  {timePeriod === "weekly"
+                    ? "Daily sales for this week"
+                    : timePeriod === "monthly"
+                    ? "Weekly sales for this month"
+                    : "Monthly sales for this year"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="h-[300px]">
+                  <BarChart data={data.salesData} />
+                </div>
+              </CardContent>
+            </Card>
+
+            <Card className="col-span-5">
+              <CardHeader>
+                <CardTitle>Product Sales</CardTitle>
+                <CardDescription>
+                  {timePeriod === "weekly"
+                    ? "Overall sales for this week"
+                    : timePeriod === "monthly"
+                    ? "Overall sales for this month"
+                    : "Overall sales for this year"}
+                </CardDescription>
+              </CardHeader>
+              <CardContent className="h-[300px] overflow-y-auto">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Product</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Price</TableHead>
+                      <TableHead>Quantity Sold</TableHead>
+                      <TableHead>Sales Income</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {data.productSales.map((item) => (
+                      <TableRow key={item.id}>
+                        <TableCell className="font-medium">
+                          {item.product}
+                        </TableCell>
+                        <TableCell>{item.type}</TableCell>
+                        <TableCell>₱{item.price}</TableCell>
+                        <TableCell>{item.quantitySold}</TableCell>
+                        <TableCell>
+                          ₱
+                          {item.salesIncome.toLocaleString(undefined, {
+                            minimumFractionDigits: 2,
+                            maximumFractionDigits: 2,
+                          })}
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Products
-            </CardTitle>
-            <Package className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">{data.totalProducts.value}</div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Sales
-            </CardTitle>
-            <ShoppingCart className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">
-              $
-              {data.totalSales.value.toLocaleString(undefined, {
-                minimumFractionDigits: 2,
-                maximumFractionDigits: 2,
-              })}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Transactions
-            </CardTitle>
-            <TrendingUp className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">
-              {data.totalTransactions.value}
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-muted-foreground">
-              Total Customers
-            </CardTitle>
-            <Users className="h-4 w-4 text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-3xl font-bold">
-              {data.totalCustomers.value.toLocaleString()}
-            </div>
-          </CardContent>
-        </Card>
-      </div>
-
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
-        <Card className="col-span-3 h-auto">
-          <CardHeader>
-            <CardTitle>Sales Overview</CardTitle>
-            <CardDescription>
-              {timePeriod === "weekly"
-                ? "Daily sales for this week"
-                : timePeriod === "monthly"
-                ? "Weekly sales for this month"
-                : "Monthly sales for this year"}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="h-[300px]">
-              <BarChart data={data.salesData} />
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card className="col-span-5">
-        <CardHeader>
-          <CardTitle>Product Sales</CardTitle>
-          <CardDescription>
-            {timePeriod === "weekly"
-              ? "Overall sales for this week"
-              : timePeriod === "monthly"
-              ? "Overall sales for this month"
-              : "Overall sales for this year"}
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="h-[300px] overflow-y-auto">
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Product</TableHead>
-                <TableHead>Type</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Quantity Sold</TableHead>
-                <TableHead>Sales Income</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {data.productSales.map((item) => (
-                <TableRow key={item.id}>
-                  <TableCell className="font-medium">{item.product}</TableCell>
-                  <TableCell>{item.type}</TableCell>
-                  <TableCell>₱{item.price}</TableCell>
-                  <TableCell>{item.quantitySold}</TableCell>
-                  <TableCell>
-                    ₱
-                    {item.salesIncome.toLocaleString(undefined, {
-                      minimumFractionDigits: 2,
-                      maximumFractionDigits: 2,
-                    })}
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-      </div>
-      
-    </div>
+    </SidebarProvider>
   );
 }

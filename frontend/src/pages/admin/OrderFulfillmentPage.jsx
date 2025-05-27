@@ -19,11 +19,7 @@ import {
   XCircle,
   Trash,
 } from "lucide-react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-} from "@/components/ui/card";
+import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import {
   Select,
@@ -33,6 +29,8 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { SidebarProvider } from "../../components/ui/sidebar";
+import { AppSidebar } from "../../components/SideBar";
 
 // Sample order data
 const initialOrders = [
@@ -228,201 +226,213 @@ export default function OrderFulfillmentPage() {
   const cancelledCount = data.filter((order) => order.status === 2).length;
 
   return (
-    <div className="m-12">
-      <div className="mt-2 mb-8">
-        <h2 className="text-3xl font-semibold">Order Fulfillment</h2>
-        <p className="mt-4 text-gray-500">
-          Change order status of the customer
-        </p>
-      </div>
-      <Card className="flex flex-col w-full h-[70vh]">
-        <CardContent className="space-y-4">
-          {/* Search Bar */}
-          <div className="relative flex gap-4">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search orders..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8"
-            />
-            {/* Type Filter Tabs */}
-            <Tabs
-              value={activeFilterTab}
-              onValueChange={handleFilterTabChange}
-              className="w-auto"
-            >
-              <TabsList>
-                <TabsTrigger value="all" className="text-xs px-3">
-                  All ({data.length})
-                </TabsTrigger>
-                <TabsTrigger value="0" className="text-xs px-3">
-                  <Clock className="h-3 w-3 mr-1 text-yellow-600" />
-                  Pending ({pendingCount})
-                </TabsTrigger>
-                <TabsTrigger value="1" className="text-xs px-3">
-                  <CheckCircle className="h-3 w-3 mr-1 text-green-600" />
-                  Completed ({completedCount})
-                </TabsTrigger>
-                <TabsTrigger value="2" className="text-xs px-3">
-                  <XCircle className="h-3 w-3 mr-1 text-red-600" />
-                  Cancelled ({cancelledCount})
-                </TabsTrigger>
-              </TabsList>
-            </Tabs>
-          </div>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+        <div className="w-48">
+          <AppSidebar userType="admin" />
+        </div>
 
-          {/* Table */}
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSort("prodId")}
-                      className="flex items-center gap-1 font-medium"
-                    >
-                      Product ID
-                      <ArrowUpDown className="h-4 w-4" />
-                    </Button>
-                  </TableHead>
-                  <TableHead>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSort("qty")}
-                      className="flex items-center gap-1 font-medium"
-                    >
-                      Quantity
-                      <ArrowUpDown className="h-4 w-4" />
-                    </Button>
-                  </TableHead>
-                  <TableHead>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSort("email")}
-                      className="flex items-center gap-1 font-medium"
-                    >
-                      Email
-                      <ArrowUpDown className="h-4 w-4" />
-                    </Button>
-                  </TableHead>
-                  <TableHead>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSort("date")}
-                      className="flex items-center gap-1 font-medium"
-                    >
-                      Date
-                      <ArrowUpDown className="h-4 w-4" />
-                    </Button>
-                  </TableHead>
-                  <TableHead>Status</TableHead>
-                  <TableHead className="w-[80px]"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {paginatedData.length > 0 ? (
-                  paginatedData.map((order) => (
-                    <TableRow key={order.id}>
-                      <TableCell className="font-medium">
-                        {order.prodId}
-                      </TableCell>
-                      <TableCell>{order.qty}</TableCell>
-                      <TableCell>{order.email}</TableCell>
-                      <TableCell>{order.date.toLocaleDateString()}</TableCell>
-                      <TableCell>
-                        <Select
-                          defaultValue={order.status.toString() ?? "0"}
-                          onValueChange={(value) =>
-                            handleStatusChange(order.id, parseInt(value))
-                          }
-                        >
-                          <SelectTrigger className="w-[130px]">
-                            <SelectValue
-                              placeholder={renderStatusBadge(order.status)}
-                            >
-                              {renderStatusBadge(order.status)}
-                            </SelectValue>
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="0">
-                              {renderStatusBadge(0)}
-                            </SelectItem>
-                            <SelectItem value="1">
-                              {renderStatusBadge(1)}
-                            </SelectItem>
-                            <SelectItem value="2">
-                              {renderStatusBadge(2)}
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell>
+        <div className="flex-1 p-12">
+          <div className="mt-2 mb-8">
+            <h2 className="text-3xl font-semibold">Order Fulfillment</h2>
+            <p className="mt-4 text-gray-500">
+              Change order status of the customer
+            </p>
+          </div>
+          <Card className="flex flex-col w-full h-[70vh]">
+            <CardContent className="space-y-4">
+              {/* Search Bar */}
+              <div className="relative flex gap-4">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search orders..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-8"
+                />
+                {/* Type Filter Tabs */}
+                <Tabs
+                  value={activeFilterTab}
+                  onValueChange={handleFilterTabChange}
+                  className="w-auto"
+                >
+                  <TabsList>
+                    <TabsTrigger value="all" className="text-xs px-3">
+                      All ({data.length})
+                    </TabsTrigger>
+                    <TabsTrigger value="0" className="text-xs px-3">
+                      <Clock className="h-3 w-3 mr-1 text-yellow-600" />
+                      Pending ({pendingCount})
+                    </TabsTrigger>
+                    <TabsTrigger value="1" className="text-xs px-3">
+                      <CheckCircle className="h-3 w-3 mr-1 text-green-600" />
+                      Completed ({completedCount})
+                    </TabsTrigger>
+                    <TabsTrigger value="2" className="text-xs px-3">
+                      <XCircle className="h-3 w-3 mr-1 text-red-600" />
+                      Cancelled ({cancelledCount})
+                    </TabsTrigger>
+                  </TabsList>
+                </Tabs>
+              </div>
+
+              {/* Table */}
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>
                         <Button
                           variant="ghost"
-                          className="h-8 w-8 p-0 text-destructive focus:text-destructive"
-                          onClick={() => handleDelete(order.id)}
+                          onClick={() => handleSort("prodId")}
+                          className="flex items-center gap-1 font-medium"
                         >
-                          <span className="sr-only">Delete</span>
-                          <Trash className="h-4 w-4" />
+                          Product ID
+                          <ArrowUpDown className="h-4 w-4" />
                         </Button>
-                      </TableCell>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleSort("qty")}
+                          className="flex items-center gap-1 font-medium"
+                        >
+                          Quantity
+                          <ArrowUpDown className="h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleSort("email")}
+                          className="flex items-center gap-1 font-medium"
+                        >
+                          Email
+                          <ArrowUpDown className="h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleSort("date")}
+                          className="flex items-center gap-1 font-medium"
+                        >
+                          Date
+                          <ArrowUpDown className="h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>Status</TableHead>
+                      <TableHead className="w-[80px]"></TableHead>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={7} className="h-24 text-center">
-                      No orders found.
-                    </TableCell>
-                  </TableRow>
-                )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedData.length > 0 ? (
+                      paginatedData.map((order) => (
+                        <TableRow key={order.id}>
+                          <TableCell className="font-medium">
+                            {order.prodId}
+                          </TableCell>
+                          <TableCell>{order.qty}</TableCell>
+                          <TableCell>{order.email}</TableCell>
+                          <TableCell>
+                            {order.date.toLocaleDateString()}
+                          </TableCell>
+                          <TableCell>
+                            <Select
+                              defaultValue={order.status.toString() ?? "0"}
+                              onValueChange={(value) =>
+                                handleStatusChange(order.id, parseInt(value))
+                              }
+                            >
+                              <SelectTrigger className="w-[130px]">
+                                <SelectValue
+                                  placeholder={renderStatusBadge(order.status)}
+                                >
+                                  {renderStatusBadge(order.status)}
+                                </SelectValue>
+                              </SelectTrigger>
+                              <SelectContent>
+                                <SelectItem value="0">
+                                  {renderStatusBadge(0)}
+                                </SelectItem>
+                                <SelectItem value="1">
+                                  {renderStatusBadge(1)}
+                                </SelectItem>
+                                <SelectItem value="2">
+                                  {renderStatusBadge(2)}
+                                </SelectItem>
+                              </SelectContent>
+                            </Select>
+                          </TableCell>
+                          <TableCell>
+                            <Button
+                              variant="ghost"
+                              className="h-8 w-8 p-0 text-destructive focus:text-destructive"
+                              onClick={() => handleDelete(order.id)}
+                            >
+                              <span className="sr-only">Delete</span>
+                              <Trash className="h-4 w-4" />
+                            </Button>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={7} className="h-24 text-center">
+                          No orders found.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
 
-        {/* Pagination */}
-        <CardFooter className="flex items-center justify-between mt-auto">
-          <div className="text-sm text-muted-foreground">
-            Showing{" "}
-            {paginatedData.length > 0
-              ? (currentPage - 1) * itemsPerPage + 1
-              : 0}{" "}
-            to {Math.min(currentPage * itemsPerPage, filteredData.length)} of{" "}
-            {filteredData.length} orders
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <Button
-                key={page}
-                variant={currentPage === page ? "default" : "outline"}
-                size="sm"
-                onClick={() => handlePageChange(page)}
-                className="h-8 w-8 p-0"
-              >
-                {page}
-              </Button>
-            ))}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </CardFooter>
-      </Card>
-    </div>
+            {/* Pagination */}
+            <CardFooter className="flex items-center justify-between mt-auto">
+              <div className="text-sm text-muted-foreground">
+                Showing{" "}
+                {paginatedData.length > 0
+                  ? (currentPage - 1) * itemsPerPage + 1
+                  : 0}{" "}
+                to {Math.min(currentPage * itemsPerPage, filteredData.length)}{" "}
+                of {filteredData.length} orders
+              </div>
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <Button
+                      key={page}
+                      variant={currentPage === page ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handlePageChange(page)}
+                      className="h-8 w-8 p-0"
+                    >
+                      {page}
+                    </Button>
+                  )
+                )}
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardFooter>
+          </Card>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 }

@@ -33,7 +33,8 @@ import {
 } from "@/components/ui/card";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import ProductFormDialog from "./ProductFormDialog";
-import toast from "react-hot-toast";
+import { SidebarProvider } from "../../components/ui/sidebar";
+import { AppSidebar } from "../../components/SideBar";
 
 // Sample product data
 const initialProducts = [
@@ -94,7 +95,8 @@ const initialProducts = [
     price: 7.99,
     description: "Premium duck eggs with rich flavor",
     quantity: 45,
-    imageUrl: "https://images.unsplash.com/photo-1598965675045-45c5e72c7d05?q=80&w=150&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1598965675045-45c5e72c7d05?q=80&w=150&auto=format&fit=crop",
   },
   {
     id: "7",
@@ -103,7 +105,8 @@ const initialProducts = [
     price: 1.99,
     description: "Sweet and crunchy organic carrots",
     quantity: 120,
-    imageUrl: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?q=80&w=150&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?q=80&w=150&auto=format&fit=crop",
   },
   {
     id: "8",
@@ -112,7 +115,8 @@ const initialProducts = [
     price: 9.99,
     description: "Lean turkey breast from free-range turkeys",
     quantity: 30,
-    imageUrl: "https://images.unsplash.com/photo-1606728035253-49e8a23146de?q=80&w=150&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1606728035253-49e8a23146de?q=80&w=150&auto=format&fit=crop",
   },
   {
     id: "9",
@@ -121,7 +125,8 @@ const initialProducts = [
     price: 2.29,
     description: "Colorful bell peppers, perfect for salads and cooking",
     quantity: 85,
-    imageUrl: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?q=80&w=150&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?q=80&w=150&auto=format&fit=crop",
   },
   {
     id: "10",
@@ -130,7 +135,8 @@ const initialProducts = [
     price: 6.49,
     description: "Small, delicate quail eggs with spotted shells",
     quantity: 60,
-    imageUrl: "https://images.unsplash.com/photo-1518492104633-130d0cc84637?q=80&w=150&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1518492104633-130d0cc84637?q=80&w=150&auto=format&fit=crop",
   },
   {
     id: "11",
@@ -139,7 +145,8 @@ const initialProducts = [
     price: 3.49,
     description: "Versatile organic potatoes for various dishes",
     quantity: 200,
-    imageUrl: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=150&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=150&auto=format&fit=crop",
   },
   {
     id: "12",
@@ -148,7 +155,8 @@ const initialProducts = [
     price: 6.99,
     description: "Juicy chicken thighs, perfect for grilling",
     quantity: 70,
-    imageUrl: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?q=80&w=150&auto=format&fit=crop",
+    imageUrl:
+      "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?q=80&w=150&auto=format&fit=crop",
   },
 ];
 
@@ -236,10 +244,10 @@ export default function ProductListingsPage() {
     setDialogOpen(true);
   };
 
-  const handleDialogCase =() =>{
+  const handleDialogCase = () => {
     setDialogOpen(false);
     setEditingProduct(null);
-  }
+  };
 
   // Handle opening add dialog
   const handleAdd = () => {
@@ -268,190 +276,199 @@ export default function ProductListingsPage() {
   };
 
   return (
-    <div className="m-12">
-      <div className="mt-2 mb-8">
-        <h2 className="text-3xl font-semibold">Product Inventory</h2>
-        <p className="mt-4 text-gray-500">
-          Manage (add, edit, delete) all product listings here.
-        </p>
-      </div>
-      <Card className="flex flex-col w-full h-[70vh]">
-        <CardContent className="space-y-4">
-          {/* Search Bar */}
-          <div className="relative flex gap-4">
-            <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
-            <Input
-              placeholder="Search products..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="pl-8"
-            />
-            <Button onClick={handleAdd} className="flex items-center gap-1">
-              <Plus className="h-4 w-4" />
-              Add Product
-            </Button>
+    <SidebarProvider>
+      <div className="flex min-h-screen w-full">
+        <div className="w-48">
+          <AppSidebar userType="admin" />
+        </div>
+        <div className="flex-1 p-12">
+          <div className="mt-2 mb-8">
+            <h2 className="text-3xl font-semibold">Product Inventory</h2>
+            <p className="mt-4 text-gray-500">
+              Manage (add, edit, delete) all product listings here.
+            </p>
           </div>
+          <Card className="flex flex-col w-full h-[70vh]">
+            <CardContent className="space-y-4">
+              {/* Search Bar */}
+              <div className="relative flex gap-4">
+                <Search className="absolute left-2 top-2.5 h-4 w-4 text-muted-foreground" />
+                <Input
+                  placeholder="Search products..."
+                  value={searchQuery}
+                  onChange={(e) => setSearchQuery(e.target.value)}
+                  className="pl-8"
+                />
+                <Button onClick={handleAdd} className="flex items-center gap-1">
+                  <Plus className="h-4 w-4" />
+                  Add Product
+                </Button>
+              </div>
 
-          {/* Table */}
-          <div className="rounded-md border">
-            <Table>
-              <TableHeader>
-                <TableRow>
-                  <TableHead className="w-[50px]"></TableHead>
-                  <TableHead>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSort("name")}
-                      className="flex items-center gap-1 font-medium"
-                    >
-                      Product
-                      <ArrowUpDown className="h-4 w-4" />
-                    </Button>
-                  </TableHead>
-                  <TableHead>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSort("type")}
-                      className="flex items-center gap-1 font-medium"
-                    >
-                      Type
-                      <ArrowUpDown className="h-4 w-4" />
-                    </Button>
-                  </TableHead>
-                  <TableHead>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSort("price")}
-                      className="flex items-center gap-1 font-medium"
-                    >
-                      Price
-                      <ArrowUpDown className="h-4 w-4" />
-                    </Button>
-                  </TableHead>
-                  <TableHead>Description</TableHead>
-                  <TableHead>
-                    <Button
-                      variant="ghost"
-                      onClick={() => handleSort("quantity")}
-                      className="flex items-center gap-1 font-medium"
-                    >
-                      Quantity
-                      <ArrowUpDown className="h-4 w-4" />
-                    </Button>
-                  </TableHead>
-                  <TableHead className="w-[80px]"></TableHead>
-                </TableRow>
-              </TableHeader>
-              <TableBody>
-                {paginatedData.length > 0 ? (
-                  paginatedData.map((product) => (
-                    <TableRow key={product.id}>
-                      <TableCell>
-                        <Avatar className="h-10 w-10">
-                          <AvatarImage
-                            src={product.imageUrl || "/placeholder.svg"}
-                            alt={product.name}
-                          />
-                          <AvatarFallback>
-                            <ImageIcon className="h-5 w-5" />
-                          </AvatarFallback>
-                        </Avatar>
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {product.name}
-                      </TableCell>
-                      <TableCell>{product.type}</TableCell>
-                      <TableCell>₱{product.price.toFixed(2)}</TableCell>
-                      <TableCell className="max-w-[300px] truncate">
-                        {product.description}
-                      </TableCell>
-                      <TableCell>{product.quantity}</TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={() => handleEdit(product.id)}
-                            >
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => handleDelete(product.id)}
-                              className="text-destructive focus:text-destructive"
-                            >
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
+              {/* Table */}
+              <div className="rounded-md border">
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead className="w-[50px]"></TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleSort("name")}
+                          className="flex items-center gap-1 font-medium"
+                        >
+                          Product
+                          <ArrowUpDown className="h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleSort("type")}
+                          className="flex items-center gap-1 font-medium"
+                        >
+                          Type
+                          <ArrowUpDown className="h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleSort("price")}
+                          className="flex items-center gap-1 font-medium"
+                        >
+                          Price
+                          <ArrowUpDown className="h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead>
+                        <Button
+                          variant="ghost"
+                          onClick={() => handleSort("quantity")}
+                          className="flex items-center gap-1 font-medium"
+                        >
+                          Quantity
+                          <ArrowUpDown className="h-4 w-4" />
+                        </Button>
+                      </TableHead>
+                      <TableHead className="w-[80px]"></TableHead>
                     </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={7} className="h-24 text-center">
-                      No products found.
-                    </TableCell>
-                  </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {paginatedData.length > 0 ? (
+                      paginatedData.map((product) => (
+                        <TableRow key={product.id}>
+                          <TableCell>
+                            <Avatar className="h-10 w-10">
+                              <AvatarImage
+                                src={product.imageUrl || "/placeholder.svg"}
+                                alt={product.name}
+                              />
+                              <AvatarFallback>
+                                <ImageIcon className="h-5 w-5" />
+                              </AvatarFallback>
+                            </Avatar>
+                          </TableCell>
+                          <TableCell className="font-medium">
+                            {product.name}
+                          </TableCell>
+                          <TableCell>{product.type}</TableCell>
+                          <TableCell>₱{product.price.toFixed(2)}</TableCell>
+                          <TableCell className="max-w-[300px] truncate">
+                            {product.description}
+                          </TableCell>
+                          <TableCell>{product.quantity}</TableCell>
+                          <TableCell>
+                            <DropdownMenu>
+                              <DropdownMenuTrigger asChild>
+                                <Button variant="ghost" className="h-8 w-8 p-0">
+                                  <span className="sr-only">Open menu</span>
+                                  <MoreHorizontal className="h-4 w-4" />
+                                </Button>
+                              </DropdownMenuTrigger>
+                              <DropdownMenuContent align="end">
+                                <DropdownMenuItem
+                                  onClick={() => handleEdit(product.id)}
+                                >
+                                  Edit
+                                </DropdownMenuItem>
+                                <DropdownMenuItem
+                                  onClick={() => handleDelete(product.id)}
+                                  className="text-destructive focus:text-destructive"
+                                >
+                                  Delete
+                                </DropdownMenuItem>
+                              </DropdownMenuContent>
+                            </DropdownMenu>
+                          </TableCell>
+                        </TableRow>
+                      ))
+                    ) : (
+                      <TableRow>
+                        <TableCell colSpan={7} className="h-24 text-center">
+                          No products found.
+                        </TableCell>
+                      </TableRow>
+                    )}
+                  </TableBody>
+                </Table>
+              </div>
+            </CardContent>
+
+            {/* Pagination */}
+            <CardFooter className="flex items-center justify-between mt-auto">
+              <div className="text-sm text-muted-foreground">
+                Showing{" "}
+                {paginatedData.length > 0
+                  ? (currentPage - 1) * itemsPerPage + 1
+                  : 0}{" "}
+                to {Math.min(currentPage * itemsPerPage, filteredData.length)}{" "}
+                of {filteredData.length} products
+              </div>
+              <div className="flex items-center space-x-2">
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage - 1)}
+                  disabled={currentPage === 1}
+                >
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                {Array.from({ length: totalPages }, (_, i) => i + 1).map(
+                  (page) => (
+                    <Button
+                      key={page}
+                      variant={currentPage === page ? "default" : "outline"}
+                      size="sm"
+                      onClick={() => handlePageChange(page)}
+                      className="h-8 w-8 p-0"
+                    >
+                      {page}
+                    </Button>
+                  )
                 )}
-              </TableBody>
-            </Table>
-          </div>
-        </CardContent>
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={() => handlePageChange(currentPage + 1)}
+                  disabled={currentPage === totalPages}
+                >
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </div>
+            </CardFooter>
 
-        {/* Pagination */}
-        <CardFooter className="flex items-center justify-between mt-auto">
-          <div className="text-sm text-muted-foreground">
-            Showing{" "}
-            {paginatedData.length > 0
-              ? (currentPage - 1) * itemsPerPage + 1
-              : 0}{" "}
-            to {Math.min(currentPage * itemsPerPage, filteredData.length)} of{" "}
-            {filteredData.length} products
-          </div>
-          <div className="flex items-center space-x-2">
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage - 1)}
-              disabled={currentPage === 1}
-            >
-              <ChevronLeft className="h-4 w-4" />
-            </Button>
-            {Array.from({ length: totalPages }, (_, i) => i + 1).map((page) => (
-              <Button
-                key={page}
-                variant={currentPage === page ? "default" : "outline"}
-                size="sm"
-                onClick={() => handlePageChange(page)}
-                className="h-8 w-8 p-0"
-              >
-                {page}
-              </Button>
-            ))}
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={() => handlePageChange(currentPage + 1)}
-              disabled={currentPage === totalPages}
-            >
-              <ChevronRight className="h-4 w-4" />
-            </Button>
-          </div>
-        </CardFooter>
-
-        {/* Product Form Dialog */}
-        <ProductFormDialog
-          open={dialogOpen}
-          onOpenChange={handleDialogCase}
-          initialData={editingProduct}
-          onSubmit={handleFormSubmit}
-        />
-      </Card>
-    </div>
+            {/* Product Form Dialog */}
+            <ProductFormDialog
+              open={dialogOpen}
+              onOpenChange={handleDialogCase}
+              initialData={editingProduct}
+              onSubmit={handleFormSubmit}
+            />
+          </Card>
+        </div>
+      </div>
+    </SidebarProvider>
   );
 }
