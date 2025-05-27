@@ -128,7 +128,7 @@ export default function UserFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] max-h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-[90vh] max-h-[90vh] flex flex-col">
         <DialogHeader className="px-1">
           <DialogTitle>
             {initialData ? "Edit User" : "Add New User"}

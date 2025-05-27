@@ -184,7 +184,7 @@ export default function ProductFormDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[500px] max-h-[90vh] flex flex-col">
+      <DialogContent className="sm:max-w-[90vh] max-h-[90vh] flex flex-col">
         <DialogHeader className="px-1">
           <DialogTitle>
             {initialData ? "Edit Product" : "Add New Product"}
