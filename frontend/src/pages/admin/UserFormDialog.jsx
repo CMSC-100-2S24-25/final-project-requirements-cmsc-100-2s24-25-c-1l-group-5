@@ -108,23 +108,26 @@ export default function UserFormDialog({
 
   // Handle form submission
   const handleSubmit = (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    if (validateForm()) {
-      // Convert form data to match the expected product format
-      const userData = {
-        fName: formData.fName,
-        mName: formData.mName,
-        lName: formData.lName,
-        email: formData.email,
-        password: formData.password,
-        uType: formData.uType,
-      };
+  if (validateForm()) {
+    const userData = {
+      id: formData.id,
+      fName: formData.fName,
+      mName: formData.mName,
+      lName: formData.lName,
+      email: formData.email,
+      password: formData.password,
+      uType: formData.uType,
+    };
 
-      onSubmit(userData);
-      onOpenChange(false);
-    }
-  };
+    console.log("Submitting user data:", userData);  // <- add this line
+
+    onSubmit(userData);
+    onOpenChange(false);
+  }
+};
+
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

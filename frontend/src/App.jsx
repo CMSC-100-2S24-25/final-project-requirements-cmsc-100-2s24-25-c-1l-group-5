@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from "react-router-dom";
+import { useAuth } from "@/context/AuthContext";
 
 // Import components
 import { Cart } from "./components/user/Cart";
@@ -22,8 +23,8 @@ import SignUpPage from "./pages/login-signup/SignUpPage.jsx";
 
 
 function App() {
-  const isUserLoggedIn = !!localStorage.getItem("token");
-  const userType = localStorage.getItem("userType");
+  const { token, userType } = useAuth();
+  const isUserLoggedIn = !!token;
 
   return (
     <Router>

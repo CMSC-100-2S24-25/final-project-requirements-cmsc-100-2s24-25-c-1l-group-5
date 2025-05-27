@@ -36,198 +36,123 @@ import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { AdminSidebar } from "../../components/admin/AdminSidebar";
 import { SidebarProvider } from "../../components/ui/sidebar";
 
-// Sample order data
-const initialOrders = [
-  {
-    id: "1",
-    prodId: "1",
-    qty: 3,
-    status: 1, // pending
-    email: "customer1@example.com",
-    date: new Date("2025-05-17T10:30:00Z"),
-    time: "10:30 AM",
-  },
-  {
-    id: "2",
-    prodId: "3",
-    qty: 2,
-    status: 2, // completed
-    email: "customer2@example.com",
-    date: new Date("2025-05-16T14:45:00Z"),
-    time: "2:45 PM",
-  },
-  {
-    id: "3",
-    prodId: "5",
-    qty: 5,
-    status: 0, // pending
-    email: "customer3@example.com",
-    date: new Date("2025-05-15T09:00:00Z"),
-    time: "9:00 AM",
-  },
-  {
-    id: "4",
-    prodId: "3",
-    qty: 1,
-    status: 1, // pending
-    email: "customer4@example.com",
-    date: new Date("2025-05-14T16:00:00Z"),
-    time: "4:00 PM",
-  },
-  {
-    id: "5",
-    prodId: "2",
-    qty: 10,
-    status: 2, // completed
-    email: "customer5@example.com",
-    date: new Date("2025-05-13T12:15:00Z"),
-    time: "12:15 PM",
-  },
-];
-
 export default function OrderFulfillmentPage() {
-  const [data, setData] = useState(initialOrders);
-  const [sorting, setSorting] = useState({
-    column: null,
-    direction: "asc",
-  });
+  const [data, setData] = useState([]);
+  const [sorting, setSorting] = useState({ column: null, direction: "asc" });
 
-  // Search state
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(initialOrders);
-
-  // Type filter state
+  const [filteredData, setFilteredData] = useState([]);
   const [activeFilterTab, setActiveFilterTab] = useState("all");
-
-  // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 5;
 
-  // Filter and sort data
+  // Fetch orders from backend
   useEffect(() => {
-    let filteredData = [...data];
+    fetch("http://localhost:3000/api/orders/")
+      .then(res => res.json())
+      .then(json => {
+        setData(json);
+        setFilteredData(json);
+      });
+  }, []);
 
-    // Apply status filter based on active tab
-    if (activeFilterTab === "0") {
-      filteredData = filteredData.filter((order) => order.status === 0);
-    } else if (activeFilterTab === "1") {
-      filteredData = filteredData.filter((order) => order.status === 1);
-    } else if (activeFilterTab === "2") {
-      filteredData = filteredData.filter((order) => order.status === 2);
-    }
+  // Filter, sort, and search
+  useEffect(() => {
+    let filtered = [...data];
 
-    // Apply search filter
+    if (activeFilterTab === "0") filtered = filtered.filter(o => o.status === 0);
+    else if (activeFilterTab === "1") filtered = filtered.filter(o => o.status === 1);
+    else if (activeFilterTab === "2") filtered = filtered.filter(o => o.status === 2);
+
     if (searchQuery.trim() !== "") {
-      const lowercasedQuery = searchQuery.toLowerCase();
-      filteredData = filteredData.filter(
-        (order) =>
-          order.prodId.toLowerCase().includes(lowercasedQuery) ||
-          order.email.toLowerCase().includes(lowercasedQuery)
+      const q = searchQuery.toLowerCase();
+      filtered = filtered.filter(
+        o =>
+          o.prodId.toLowerCase().includes(q) ||
+          o.email.toLowerCase().includes(q)
       );
     }
 
-    // Apply sorting
     if (sorting.column) {
-      filteredData.sort((a, b) => {
-        const aValue = a[sorting.column];
-        const bValue = b[sorting.column];
+      filtered.sort((a, b) => {
+        const aVal = a[sorting.column];
+        const bVal = b[sorting.column];
 
         if (sorting.column === "date") {
           return sorting.direction === "asc"
-            ? a.date - b.date
-            : b.date - a.date;
-        } else if (typeof aValue === "string" && typeof bValue === "string") {
+            ? new Date(aVal) - new Date(bVal)
+            : new Date(bVal) - new Date(aVal);
+        } else if (typeof aVal === "string") {
           return sorting.direction === "asc"
-            ? aValue.localeCompare(bValue)
-            : bValue.localeCompare(aValue);
+            ? aVal.localeCompare(bVal)
+            : bVal.localeCompare(aVal);
         } else {
-          return sorting.direction === "asc"
-            ? aValue - bValue
-            : bValue - aValue;
+          return sorting.direction === "asc" ? aVal - bVal : bVal - aVal;
         }
       });
     }
 
-    setFilteredData(filteredData);
-    // Reset to first page when search or sort changes
+    setFilteredData(filtered);
     setCurrentPage(1);
-  }, [searchQuery, data, activeFilterTab, sorting.column, sorting.direction]);
+  }, [searchQuery, data, activeFilterTab, sorting]);
 
-  // Handle sorting
   const handleSort = (column) => {
-    setSorting((prev) => ({
+    setSorting(prev => ({
       column,
-      direction:
-        prev.column === column && prev.direction === "asc" ? "desc" : "asc",
+      direction: prev.column === column && prev.direction === "asc" ? "desc" : "asc",
     }));
   };
 
-  // Handle filter tab change
   const handleFilterTabChange = (value) => {
     setActiveFilterTab(value);
   };
 
-  // Calculate pagination
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
+
+  const handleDelete = async (id) => {
+    await fetch(`http://localhost:3000/api/orders/${id}`, { method: "DELETE" });
+    setData(prev => prev.filter(o => o._id !== id));
+  };
+
+  const handleStatusChange = async (id, newStatus) => {
+    await fetch(`http://localhost:3000/api/orders/${id}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ status: newStatus }),
+    });
+    setData(prev =>
+      prev.map(o => (o._id === id ? { ...o, status: newStatus } : o))
+    );
+  };
+
+  const renderStatusBadge = (status) => {
+    if (status === 0) {
+      return (
+        <Badge className="bg-yellow-50 text-yellow-700 border-yellow-200">Pending</Badge>
+      );
+    } else if (status === 1) {
+      return (
+        <Badge className="bg-green-50 text-green-700 border-green-200">Completed</Badge>
+      );
+    } else if (status === 2) {
+      return (
+        <Badge className="bg-red-50 text-red-700 border-red-200">Cancelled</Badge>
+      );
+    }
+    return status;
+  };
+
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Handle page change
-  const handlePageChange = (page) => {
-    setCurrentPage(page);
-  };
-
-  // Handle delete action
-  const handleDelete = (id) => {
-    setData(data.filter((order) => order.id !== id));
-  };
-
-  const handleStatusChange = (id, newType) => {
-    setData((prevData) =>
-      prevData.map((order) =>
-        order.id === id ? { ...order, status: newType } : order
-      )
-    );
-  };
-
-  // Render status badge with appropriate color
-  const renderStatusBadge = (status) => {
-    if (status === 0) {
-      return (
-        <Badge
-          variant="outline"
-          className="bg-yellow-50 text-yellow-700 border-yellow-200 flex items-center gap-1"
-        >
-          Pending
-        </Badge>
-      );
-    } else if (status === 1) {
-      return (
-        <Badge
-          variant="outline"
-          className="bg-green-50 text-green-700 border-green-200 flex items-center gap-1"
-        >
-          Completed
-        </Badge>
-      );
-    } else if (status === 2) {
-      return (
-        <Badge
-          variant="outline"
-          className="bg-red-50 text-red-700 border-red-200 flex items-center gap-1"
-        >
-          Cancelled
-        </Badge>
-      );
-    }
-    return status;
-  };
-
-  const pendingCount = data.filter((order) => order.status === 0).length;
-  const completedCount = data.filter((order) => order.status === 1).length;
-  const cancelledCount = data.filter((order) => order.status === 2).length;
+  const pendingCount = data.filter(o => o.status === 0).length;
+  const completedCount = data.filter(o => o.status === 1).length;
+  const cancelledCount = data.filter(o => o.status === 2).length;
 
   return (
     <div className="m-12">
@@ -325,60 +250,57 @@ export default function OrderFulfillmentPage() {
               </TableHeader>
               <TableBody>
                 {paginatedData.length > 0 ? (
-                  paginatedData.map((order) => (
-                    <TableRow key={order.id}>
-                      <TableCell className="font-medium">
-                        {order.prodId}
-                      </TableCell>
-                      <TableCell>{order.qty}</TableCell>
-                      <TableCell>{order.email}</TableCell>
-                      <TableCell>{order.date.toLocaleDateString()}</TableCell>
-                      <TableCell>
-                        <Select
-                          defaultValue={order.status.toString() ?? "0"}
-                          onValueChange={(value) =>
-                            handleStatusChange(order.id, parseInt(value))
-                          }
-                        >
-                          <SelectTrigger className="w-[130px]">
-                            <SelectValue
-                              placeholder={renderStatusBadge(order.status)}
-                            >
-                              {renderStatusBadge(order.status)}
-                            </SelectValue>
-                          </SelectTrigger>
-                          <SelectContent>
-                            <SelectItem value="0">
-                              {renderStatusBadge(0)}
-                            </SelectItem>
-                            <SelectItem value="1">
-                              {renderStatusBadge(1)}
-                            </SelectItem>
-                            <SelectItem value="2">
-                              {renderStatusBadge(2)}
-                            </SelectItem>
-                          </SelectContent>
-                        </Select>
-                      </TableCell>
-                      <TableCell>
-                        <Button
-                          variant="ghost"
-                          className="h-8 w-8 p-0 text-destructive focus:text-destructive"
-                          onClick={() => handleDelete(order.id)}
-                        >
-                          <span className="sr-only">Delete</span>
-                          <Trash className="h-4 w-4" />
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                  ))
-                ) : (
-                  <TableRow>
-                    <TableCell colSpan={7} className="h-24 text-center">
-                      No orders found.
-                    </TableCell>
-                  </TableRow>
-                )}
+  paginatedData.map((order) => (
+    <TableRow key={order._id}>
+      <TableCell className="font-medium">
+        {/* Join all product IDs */}
+        {order.products.map(p => `${p.name} (${p.qtyOrdered})`).join(", ")}
+      </TableCell>
+      <TableCell>
+        {order.products.reduce((sum, p) => sum + p.qtyOrdered, 0)}
+      </TableCell>
+      <TableCell>{order.email}</TableCell>
+      <TableCell>
+        {new Date(order.date).toLocaleDateString()}
+      </TableCell>
+      <TableCell>
+        <Select
+          defaultValue={order.status.toString()}
+          onValueChange={(value) =>
+            handleStatusChange(order._id, parseInt(value))
+          }
+        >
+          <SelectTrigger className="w-[130px]">
+            <SelectValue>
+              {renderStatusBadge(order.status)}
+            </SelectValue>
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="0">{renderStatusBadge(0)}</SelectItem>
+            <SelectItem value="1">{renderStatusBadge(1)}</SelectItem>
+            <SelectItem value="2">{renderStatusBadge(2)}</SelectItem>
+          </SelectContent>
+        </Select>
+      </TableCell>
+      <TableCell>
+        <Button
+          variant="ghost"
+          className="h-8 w-8 p-0 text-destructive focus:text-destructive"
+          onClick={() => handleDelete(order._id)}
+        >
+          <Trash className="h-4 w-4" />
+        </Button>
+      </TableCell>
+    </TableRow>
+  ))
+) : (
+  <TableRow>
+    <TableCell colSpan={7} className="h-24 text-center">
+      No orders found.
+    </TableCell>
+  </TableRow>
+)}
+
               </TableBody>
             </Table>
           </div>

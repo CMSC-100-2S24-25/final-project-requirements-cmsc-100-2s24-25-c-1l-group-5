@@ -1,15 +1,15 @@
-// backend/server.js
-// Import packages
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 
-// Import routes
-import authRoutes from './server/routes/authRoutes.js'
-import productRoutes from './server/routes/productRoutes.js';
-import orderRoutes from './server/routes/orderRoutes.js';
+// Import routers
+import authRoutes from './routes/authRoutes.js';
+import userRoutes from './routes/userRoutes.js';
+import productRoutes from './routes/productRoutes.js';
+import orderRoutes from './routes/orderRoutes.js';
+import reportRoutes from './routes/reportRoutes.js';
 
 const app = express();
 dotenv.config({ path: '../.env' });
@@ -36,14 +36,12 @@ const connectDB = async () => {
 
 connectDB();
 
-// Routes
-app.post('/auth/test', (req, res) => {
-  res.json({ message: "Test route hit!" });
-});
-
-app.use('/auth', authRoutes);
-app.use('/products', productRoutes);
-app.use('/orders', orderRoutes);
+// Use separated routers
+app.use('/api', authRoutes);
+app.use('/api', userRoutes);
+app.use('/api', productRoutes);
+app.use('/api', orderRoutes);
+app.use('/api', reportRoutes);
 
 // Basic endpoint
 app.get('/', (req, res) => {

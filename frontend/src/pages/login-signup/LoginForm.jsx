@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form"
 import { z } from "zod"
 import { useNavigate } from "react-router-dom"
 import toast from 'react-hot-toast';
+import { useAuth } from "@/context/AuthContext";
 
 import { Button } from "@/components/ui/button"
 import {
@@ -28,6 +29,7 @@ const formSchema = z.object({
 
 
 export function LoginForm() {
+  const { login } = useAuth();
   const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false)
 
@@ -35,9 +37,9 @@ export function LoginForm() {
     fetchUsers();
   }, [])
 
-  const fetchUsers = () => {
+  const fetchUsers = () => {  
     axios
-      .get("http://localhost:3000/auth/users")
+      .get("http://localhost:3000/api/users")
       .then((response) => {
         console.log("Fetched users:", response.data)
       })
@@ -56,10 +58,9 @@ export function LoginForm() {
 
   const onSubmit = (data) => {
     axios
-      .post("http://localhost:3000/auth/login", data)
+      .post("http://localhost:3000/api/login", data)
       .then((res) => {
-        localStorage.setItem("token", res.data.token);
-        localStorage.setItem("userType", res.data.userType);
+        login(res.data.token, res.data.userType);
         toast.success("Login successful!", { position: 'top-right' })
         if (res.data.userType === "merchant") {
           navigate("/admin/products");

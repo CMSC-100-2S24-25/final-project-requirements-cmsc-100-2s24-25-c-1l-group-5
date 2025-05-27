@@ -7,34 +7,77 @@ export const Cart = ({ children }) => {
   const [cartItems, setCartItems] = useState([]);
 
 
-  const addToCart = (product) => {
+  const addToCart = async (product, updateProductQty) => {
+  if (!product?._id) {
+    toast.error("Invalid product ID");
+    return;
+  }
+
+  try {
+    const res = await fetch(`http://localhost:3000/api/products/${product._id}/decrement`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ qty: 1 }), // qty to decrement
+    });
+
+    // debug: log raw response
+    // console.log('Response status:', res.status);
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      console.error("Backend error:", data);
+      throw new Error(data.error || "Failed to update stock");
+    }
+
+    // Update cart state
     setCartItems((prevItems) => {
-      const isInCart = prevItems.find((item) => item.id === product.id);
+      const isInCart = prevItems.find((item) => item._id === product._id);
       if (isInCart) {
-        // If item already in cart, increase quantity and update total item price
         return prevItems.map((item) =>
-          item.id === product.id
-            ? { ...item, quantity: item.quantity + 1,itemPrice: (item.quantity + 1) * item.price }
+          item._id === product._id
+            ? {
+                ...item,
+                quantity: item.quantity + 1,
+                itemPrice: (item.quantity + 1) * item.price,
+              }
             : item
         );
       } else {
-        return [...prevItems, { ...product, quantity: 1, itemPrice: product.price }];
+        return [
+          ...prevItems,
+          {
+            ...product,
+            quantity: 1,
+            itemPrice: product.price,
+          },
+        ];
       }
     });
-    toast(`${product.name} added to cart!`,{position: 'top-right'});
-  };
+
+    updateProductQty(product._id, data.qty); // update UI with new qty
+
+    toast.success(`${product.name} added to cart!`, { position: "top-right" });
+  } catch (err) {
+    console.error("Error adding to cart:", err.message);
+    toast.error(err.message || "Failed to add to cart. Maybe out of stock?", {
+      position: "top-right",
+    });
+  }
+};
+
 
   const removeFromCart = (productId) => {
-    setCartItems((prevItems) => prevItems.filter((item) => item.id !== productId));
+    setCartItems((prevItems) => prevItems.filter((item) => item._id !== productId));
   };
 
   const increaseQuantity = (product) =>{
     setCartItems((prevItems) => {
-        const isInCart = prevItems.find((item) => item.id === product.id);
+        const isInCart = prevItems.find((item) => item._id === product._id);
         if (isInCart) {
         // If item already in cart, increase quantity
         return prevItems.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? { ...item, quantity: item.quantity + 1,itemPrice: (item.quantity + 1) * item.price }
             : item
         );
@@ -44,11 +87,11 @@ export const Cart = ({ children }) => {
 
   const decreaseQuantity = (product) =>{
     setCartItems((prevItems) => {
-        const isInCart = prevItems.find((item) => item.id === product.id);
+        const isInCart = prevItems.find((item) => item._id === product._id);
         if (isInCart) {
         // If item already in cart, decrease quantity
         return prevItems.map((item) =>
-          item.id === product.id
+          item._id === product._id
             ? { ...item, quantity: item.quantity - 1,itemPrice: (item.quantity - 1) * item.price }
             : item
         ).filter((item) => item.quantity > 0); // automatically removes item if quantity is zero

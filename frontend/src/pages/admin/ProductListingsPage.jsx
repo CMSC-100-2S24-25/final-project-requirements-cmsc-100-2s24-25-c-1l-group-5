@@ -19,176 +19,64 @@ import {
   MoreHorizontal,
   ArrowUpDown,
   Plus,
-  ImageIcon,
   Search,
   ChevronLeft,
   ChevronRight,
+  ImageIcon,
 } from "lucide-react";
 import {
   Card,
   CardContent,
-  CardHeader,
-  CardTitle,
   CardFooter,
 } from "@/components/ui/card";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import {
+  Avatar,
+  AvatarImage,
+  AvatarFallback,
+} from "@/components/ui/avatar";
 import ProductFormDialog from "./ProductFormDialog";
 import toast from "react-hot-toast";
 import { AdminSidebar } from "../../components/admin/AdminSidebar";
 import { SidebarProvider } from "../../components/ui/sidebar";
 
-// Sample product data
-const initialProducts = [
-  {
-    id: "1",
-    name: "Organic Tomatoes",
-    type: "Crop",
-    price: 3.99,
-    description: "Fresh organic tomatoes grown without pesticides",
-    quantity: 150,
-    imageUrl:
-      "https://images.unsplash.com/photo-1592924357228-91a4daadcfea?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "2",
-    name: "Free-range Eggs",
-    type: "Poultry",
-    price: 5.99,
-    description: "Farm fresh eggs from free-range chickens",
-    quantity: 200,
-    imageUrl:
-      "https://images.unsplash.com/photo-1506976785307-8732e854ad03?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "3",
-    name: "Sweet Corn",
-    type: "Crop",
-    price: 0.99,
-    description: "Locally grown sweet corn, picked daily",
-    quantity: 75,
-    imageUrl:
-      "https://images.unsplash.com/photo-1551754655-cd27e38d2076?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "4",
-    name: "Chicken Breast",
-    type: "Poultry",
-    price: 8.99,
-    description: "Hormone-free chicken breast from local farms",
-    quantity: 50,
-    imageUrl:
-      "https://images.unsplash.com/photo-1604503468506-a8da13d82791?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "5",
-    name: "Organic Lettuce",
-    type: "Crop",
-    price: 2.49,
-    description: "Crisp organic lettuce, perfect for salads",
-    quantity: 100,
-    imageUrl:
-      "https://images.unsplash.com/photo-1622206151226-18ca2c9ab4a1?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "6",
-    name: "Duck Eggs",
-    type: "Poultry",
-    price: 7.99,
-    description: "Premium duck eggs with rich flavor",
-    quantity: 45,
-    imageUrl: "https://images.unsplash.com/photo-1598965675045-45c5e72c7d05?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "7",
-    name: "Organic Carrots",
-    type: "Crop",
-    price: 1.99,
-    description: "Sweet and crunchy organic carrots",
-    quantity: 120,
-    imageUrl: "https://images.unsplash.com/photo-1598170845058-32b9d6a5da37?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "8",
-    name: "Turkey Breast",
-    type: "Poultry",
-    price: 9.99,
-    description: "Lean turkey breast from free-range turkeys",
-    quantity: 30,
-    imageUrl: "https://images.unsplash.com/photo-1606728035253-49e8a23146de?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "9",
-    name: "Bell Peppers",
-    type: "Crop",
-    price: 2.29,
-    description: "Colorful bell peppers, perfect for salads and cooking",
-    quantity: 85,
-    imageUrl: "https://images.unsplash.com/photo-1563565375-f3fdfdbefa83?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "10",
-    name: "Quail Eggs",
-    type: "Poultry",
-    price: 6.49,
-    description: "Small, delicate quail eggs with spotted shells",
-    quantity: 60,
-    imageUrl: "https://images.unsplash.com/photo-1518492104633-130d0cc84637?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "11",
-    name: "Organic Potatoes",
-    type: "Crop",
-    price: 3.49,
-    description: "Versatile organic potatoes for various dishes",
-    quantity: 200,
-    imageUrl: "https://images.unsplash.com/photo-1518977676601-b53f82aba655?q=80&w=150&auto=format&fit=crop",
-  },
-  {
-    id: "12",
-    name: "Chicken Thighs",
-    type: "Poultry",
-    price: 6.99,
-    description: "Juicy chicken thighs, perfect for grilling",
-    quantity: 70,
-    imageUrl: "https://images.unsplash.com/photo-1598103442097-8b74394b95c6?q=80&w=150&auto=format&fit=crop",
-  },
-];
-
 export default function ProductListingsPage() {
-  const [data, setData] = useState(initialProducts);
-  const [sorting, setSorting] = useState({
-    column: null,
-    direction: "asc",
-  });
-
-  // Search state
+  const [data, setData] = useState([]);
+  const [filteredData, setFilteredData] = useState([]);
+  const [sorting, setSorting] = useState({ column: null, direction: "asc" });
   const [searchQuery, setSearchQuery] = useState("");
-  const [filteredData, setFilteredData] = useState(initialProducts);
-
-  // Pagination
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5;
-
-  // Dialog state
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingProduct, setEditingProduct] = useState(null);
+  const itemsPerPage = 5;
 
-  // Filter and sort data based on search query
+  // Fetch products on mount
   useEffect(() => {
-    let result = [];
-    if (searchQuery.trim() === "") {
-      result = data;
-    } else {
-      const lowercasedQuery = searchQuery.toLowerCase();
-      result = data.filter(
-        (product) =>
-          product.name.toLowerCase().includes(lowercasedQuery) ||
-          product.type.toLowerCase().includes(lowercasedQuery) ||
-          product.description.toLowerCase().includes(lowercasedQuery)
+    fetch("http://localhost:3000/api/products")
+      .then((res) => res.json())
+      .then((products) => {
+        setData(products);
+        setFilteredData(products);
+      })
+      .catch((err) => {
+        console.error("Failed to fetch products:", err);
+        toast.error("Failed to load products");
+      });
+  }, []);
+
+  // Filter and sort
+  useEffect(() => {
+    let result = data;
+
+    if (searchQuery.trim() !== "") {
+      const q = searchQuery.toLowerCase();
+      result = result.filter(
+        (p) =>
+          p.name.toLowerCase().includes(q) ||
+          p.type.toLowerCase().includes(q) ||
+          p.description.toLowerCase().includes(q)
       );
     }
 
-    // Then sort the filtered data if sorting is active
     if (sorting.column) {
       result = [...result].sort((a, b) => {
         const aValue = a[sorting.column];
@@ -198,19 +86,15 @@ export default function ProductListingsPage() {
             ? aValue.localeCompare(bValue)
             : bValue.localeCompare(aValue);
         } else {
-          return sorting.direction === "asc"
-            ? aValue - bValue
-            : bValue - aValue;
+          return sorting.direction === "asc" ? aValue - bValue : bValue - aValue;
         }
       });
     }
 
-    // Update state with the filtered and sorted data
     setFilteredData(result);
     setCurrentPage(1);
-  }, [searchQuery, data, sorting, sorting.column, sorting.direction]);
+  }, [searchQuery, data, sorting]);
 
-  // Handle sorting
   const handleSort = (column) => {
     setSorting((prev) => ({
       column,
@@ -219,50 +103,77 @@ export default function ProductListingsPage() {
     }));
   };
 
-  // Calculate pagination
   const totalPages = Math.ceil(filteredData.length / itemsPerPage);
   const paginatedData = filteredData.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
   );
 
-  // Handle page change
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
 
-  // Handle opening edit dialog
   const handleEdit = (id) => {
-    const productToEdit = data.find((product) => product.id === id);
-    setEditingProduct(productToEdit);
+    const product = data.find((p) => p._id === id);
+    setEditingProduct(product);
     setDialogOpen(true);
   };
 
-  // Handle opening add dialog
   const handleAdd = () => {
     setEditingProduct(null);
     setDialogOpen(true);
   };
 
-  // Handle delete action
-  const handleDelete = (id) => {
-    setData(data.filter((product) => product.id !== id));
-  };
+  const handleDelete = async (id) => {
+  if (!confirm("Are you sure you want to delete this product?")) return;
 
-  // Handle form submission (both add and edit)
-  const handleFormSubmit = (productData) => {
+  try {
+    const res = await fetch(`http://localhost:3000/api/products/${id}`, {
+      method: "DELETE",
+    });
+    if (!res.ok) throw new Error("Failed to delete product");
+    setData((prev) => prev.filter((p) => p._id !== id));
+    toast.success("Product deleted");
+  } catch (err) {
+    toast.error(err.message || "Failed to delete product");
+  }
+};
+
+
+  const handleFormSubmit = async (productData) => {
+  try {
     if (editingProduct) {
-      // Update existing product
-      setData((prevData) =>
-        prevData.map((item) =>
-          item.id === productData.id ? productData : item
-        )
+      const res = await fetch(
+        `http://localhost:3000/api/products/${productData.id}`,
+        {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(productData),
+        }
       );
+      if (!res.ok) throw new Error("Failed to update product");
+      const updated = await res.json();
+      setData((prev) =>
+        prev.map((item) => (item._id === updated._id ? updated : item))
+      );
+      toast.success("Product updated");
     } else {
-      // Add new product
-      setData((prevData) => [...prevData, productData]);
+      const res = await fetch("http://localhost:3000/api/products", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(productData),
+      });
+      if (!res.ok) throw new Error("Failed to add product");
+      const created = await res.json();
+      setData((prev) => [...prev, created]);
+      toast.success("Product added");
     }
-  };
+    setDialogOpen(false);
+    setEditingProduct(null);
+  } catch (err) {
+    toast.error(err.message || "Failed to save product");
+  }
+};
 
   return (
     <div className="m-12">
@@ -288,7 +199,6 @@ export default function ProductListingsPage() {
               Add Product
             </Button>
           </div>
-
           {/* Table */}
           <div className="rounded-md border">
             <Table>
@@ -329,7 +239,7 @@ export default function ProductListingsPage() {
                   <TableHead>
                     <Button
                       variant="ghost"
-                      onClick={() => handleSort("quantity")}
+                      onClick={() => handleSort("qty")}
                       className="flex items-center gap-1 font-medium"
                     >
                       Quantity
@@ -342,11 +252,11 @@ export default function ProductListingsPage() {
               <TableBody>
                 {paginatedData.length > 0 ? (
                   paginatedData.map((product) => (
-                    <TableRow key={product.id}>
+                    <TableRow key={product._id}>
                       <TableCell>
                         <Avatar className="h-10 w-10">
                           <AvatarImage
-                            src={product.imageUrl || "/placeholder.svg"}
+                            src={product.imageURL || "/placeholder.svg"}
                             alt={product.name}
                           />
                           <AvatarFallback>
@@ -362,30 +272,27 @@ export default function ProductListingsPage() {
                       <TableCell className="max-w-[300px] truncate">
                         {product.description}
                       </TableCell>
-                      <TableCell>{product.quantity}</TableCell>
-                      <TableCell>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger asChild>
-                            <Button variant="ghost" className="h-8 w-8 p-0">
-                              <span className="sr-only">Open menu</span>
-                              <MoreHorizontal className="h-4 w-4" />
-                            </Button>
-                          </DropdownMenuTrigger>
-                          <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={() => handleEdit(product.id)}
-                            >
-                              Edit
-                            </DropdownMenuItem>
-                            <DropdownMenuItem
-                              onClick={() => handleDelete(product.id)}
-                              className="text-destructive focus:text-destructive"
-                            >
-                              Delete
-                            </DropdownMenuItem>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </TableCell>
+                      <TableCell>{product.qty}</TableCell>
+                      <TableCell className="relative">
+  <DropdownMenu>
+    <DropdownMenuTrigger asChild>
+      <Button variant="ghost" className="h-8 w-8 p-0">
+        <span className="sr-only">Open menu</span>
+        <MoreHorizontal className="h-4 w-4" />
+      </Button>
+    </DropdownMenuTrigger>
+    <DropdownMenuContent align="end">
+      <DropdownMenuItem onClick={() => handleEdit(product._id)}>Edit</DropdownMenuItem>
+      <DropdownMenuItem
+        onClick={() => handleDelete(product._id)}
+        className="text-destructive focus:text-destructive"
+      >
+        Delete
+      </DropdownMenuItem>
+    </DropdownMenuContent>
+  </DropdownMenu>
+</TableCell>
+
                     </TableRow>
                   ))
                 ) : (

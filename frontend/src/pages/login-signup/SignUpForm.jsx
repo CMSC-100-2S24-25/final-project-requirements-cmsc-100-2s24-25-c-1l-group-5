@@ -45,7 +45,7 @@ export function SignUpForm() {
 
   const fetchUsers = () => {
     axios
-      .get("http://localhost:3000/auth/users")
+      .get("http://localhost:3000/api/users")
       .then((response) => {
         console.log("Fetched users:", response.data)
       })
@@ -69,7 +69,7 @@ export function SignUpForm() {
   const onSubmit = (data) => {
     const { confirmPassword, ...signupData } = data
     axios
-      .post("http://localhost:3000/auth/signup", signupData)
+      .post("http://localhost:3000/api/signup", signupData)
       .then((res) => {
         toast.success("Sign up successful! Please log in.", { position: 'top-right' })
         navigate("/")
