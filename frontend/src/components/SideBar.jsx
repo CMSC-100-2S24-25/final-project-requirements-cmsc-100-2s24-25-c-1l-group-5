@@ -18,6 +18,11 @@ import { Button } from "@/components/ui/button"
 
 const adminMenu = [
   {
+    title: "Sales Dashboard",
+    url: "/admin/sales-report",
+    icon: BarChart2,
+  },
+  {
     title: "Order Fulfillment",
     url: "/admin/orders",
     icon: Package,
@@ -31,11 +36,6 @@ const adminMenu = [
     title: "User Management",
     url: "/admin/users",
     icon: Users,
-  },
-  {
-    title: "Sales Dashboard",
-    url: "/admin/sales-report",
-    icon: BarChart2,
   },
 ];
 
