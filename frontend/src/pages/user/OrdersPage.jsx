@@ -1,6 +1,6 @@
 import { useOrders } from "../../components/user/OrdersList";
 import { SidebarProvider } from "../../components/ui/sidebar";
-import { AppSidebar } from "../../components/user/UserSideBar";
+import { AppSidebar } from "../../components/SideBar";
 import { Button } from "../../components/ui/button";
 import toast from 'react-hot-toast';
 

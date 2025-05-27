@@ -1,5 +1,6 @@
-import { List, ShoppingBasket, Package, LogOut } from "lucide-react"
+import { List, ShoppingBasket, Package, LogOut, Users,  BarChart2 } from "lucide-react"
 import { Link, useNavigate } from "react-router-dom"
+import { useAuth } from "@/context/AuthContext";
 
 import {
   Sidebar,
@@ -15,7 +16,31 @@ import {
 
 import { Button } from "@/components/ui/button"
 
-const items = [
+const adminMenu = [
+  {
+    title: "Order Fulfillment",
+    url: "/order-fulfillment",
+    icon: Package,
+  },
+  {
+    title: "Product Listings",
+    url: "/product-listing",
+    icon: List,
+  },
+  {
+    title: "User Management",
+    url: "/user-management",
+    icon: Users,
+  },
+  {
+    title: "Sales Dashboard",
+    url: "/sales",
+    icon: BarChart2,
+  },
+];
+
+
+const userMenu = [
   {
     title: "Product Listing",
     url: "/homepage",
@@ -33,7 +58,13 @@ const items = [
   },
 ]
 
+
 export function AppSidebar() {
+  const { token, userType } = useAuth();
+  const isUserLoggedIn = !!token;
+
+  const menuItems = isUserLoggedIn && userType === "customer" ? userMenu : adminMenu;
+
   const navigate = useNavigate();
 
   const handleLogout = () => {
@@ -49,7 +80,7 @@ export function AppSidebar() {
             <SidebarGroupLabel>Website Name</SidebarGroupLabel>
             <SidebarGroupContent className="flex-1 flex flex-col">
               <SidebarMenu className="flex-1 flex flex-col">
-                {items.map((item) => (
+                {menuItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton asChild>
                       <Link to={item.url} className="flex items-center gap-2">

@@ -1,5 +1,5 @@
 import { SidebarProvider } from "../../components/ui/sidebar";
-import { AppSidebar } from "../../components/user/UserSideBar";
+import { AppSidebar } from "../../components/SideBar";
 import { Button } from "../../components/ui/button";
 import { useCart } from "../../components/user/Cart";
 import { useState, useEffect } from "react";
