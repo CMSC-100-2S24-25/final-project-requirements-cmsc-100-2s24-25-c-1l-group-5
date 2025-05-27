@@ -23,11 +23,21 @@
   "license": "ISC",
   "homepage": "https://github.com/CMSC-100-2S24-25/final-project-requirements-cmsc-100-2s24-25-c-1l-group-5#readme",
   "dependencies": {
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.0",
+    "@hookform/resolvers": "^5.0.1",
+    "@radix-ui/react-label": "^2.1.7",
+    "axios": "^1.9.0",
+    "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
     "mongodb": "^6.16.0",
-    "mongoose": "^8.13.3",
-    "needle": "^3.3.1"
+    "mongoose": "^8.15.0",
+    "needle": "^3.3.1",
+    "nodemon": "^3.1.10",
+    "react-hook-form": "^7.56.4",
+    "zod": "^3.25.28"
   },
   "devDependencies": {
     "concurrently": "^9.1.2"
