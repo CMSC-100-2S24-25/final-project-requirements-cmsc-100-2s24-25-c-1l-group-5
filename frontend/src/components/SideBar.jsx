@@ -15,6 +15,11 @@ import {
 
 const adminMenu = [
   {
+    title: "Sales Dashboard",
+    url: "/sales",
+    icon: BarChart2,
+  },
+  {
     title: "Order Fulfillment",
     url: "/order-fulfillment",
     icon: Package,
@@ -28,11 +33,6 @@ const adminMenu = [
     title: "User Management",
     url: "/user-management",
     icon: Users,
-  },
-  {
-    title: "Sales Dashboard",
-    url: "/sales",
-    icon: BarChart2,
   },
 ];
 
